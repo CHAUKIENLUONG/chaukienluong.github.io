@@ -1,15 +1,8 @@
-interface Skill {
-  name: string;
-  level: string;
-}
+import { useSelector } from 'react-redux'
+import type { RootState } from '../store/store'
 
 const About = () => {
-  const skills: Skill[] = [
-    { name: 'React', level: '90%' },
-    { name: 'TypeScript', level: '85%' },
-    { name: 'Node.js', level: '80%' },
-    { name: 'Tailwind CSS', level: '90%' },
-  ]
+  const skills = useSelector((state: RootState) => state.about.skills)
 
   return (
     <section id="about" className="py-20 bg-white dark:bg-gray-900">

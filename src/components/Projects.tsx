@@ -1,36 +1,8 @@
-// Add this interface at the top of the file
-interface Project {
-  title: string;
-  description: string;
-  image: string;
-  technologies: string[];
-  github: string;
-}
+import { useSelector } from 'react-redux'
+import type { RootState } from '../store/store'
 
 const Projects = () => {
-  const projects: Project[] = [
-    {
-      title: 'Web Warehouse Management',
-      description: 'A comprehensive web application for managing warehouse operations, including inventory tracking and order management.',
-      image: 'img/warehouse.png',
-      technologies: ['React', 'SCSS', 'Node.js', 'MySQL'],
-      github: 'https://github.com/CHAUKIENLUONG/client-warehouse-management-web.git',
-    },
-    {
-      title: 'Web Cinema ticket booking',
-      description: 'A responsive web application for booking cinema tickets online.',
-      image: 'img/cinema.png',
-      technologies: ['HTML', 'CSS', 'JavaScript', 'SCSS', 'C#', 'ASP.NET Core', 'SQL Server'],
-      github: 'https://github.com/CHAUKIENLUONG/B-talk.git',
-    },
-    {
-      title: 'Web Game Online',
-      description: 'An online platform for playing and purchasing video games, featuring user reviews and ratings.',
-      image: 'img/webGame.png',
-      technologies: ['HTML', 'CSS', 'JavaScript', 'PHP', 'Laravel', 'MySQL'],
-      github: 'https://github.com/nkhoaa/laravel-web-game.git',
-    },
-  ]
+  const projects = useSelector((state: RootState) => state.projects.projects)
 
   return (
     <section id="projects" className="py-20 bg-gray-50 dark:bg-gray-800">
@@ -102,4 +74,4 @@ const Projects = () => {
   )
 }
 
-export default Projects 
+export default Projects

@@ -1,17 +1,23 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import type { RootState, AppDispatch } from '../store/store'
+import { toggleMenu, toggleDarkMode } from '../store/slices/navbarReducer'
 
 
-interface NavbarProps {
-  darkMode: boolean
-  setDarkMode: (darkMode: boolean) => void
-}
+const Navbar = () => {
+  const dispatch = useDispatch<AppDispatch>()
+  const isMenuOpen = useSelector((state: RootState) => state.navbar.isMenuOpen)
+  const darkMode = useSelector((state: RootState) => state.navbar.darkMode)
 
-const Navbar = ({ darkMode, setDarkMode }: NavbarProps) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+  // Sync darkMode state to <html> class for Tailwind dark mode
+  useEffect(() => {
+    // Always sync darkMode from Redux to <html> class
+    if (darkMode) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [darkMode])
 
   return (
     <nav className="fixed w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm shadow-sm z-50 transition-all duration-300">
@@ -22,9 +28,8 @@ const Navbar = ({ darkMode, setDarkMode }: NavbarProps) => {
               Portfolio
             </a>
           </div>
-          
           {/* Desktop menu */}
-          <div className="hidden md:block">
+          <div className="hidden md:flex">
             <div className="ml-10 flex items-baseline space-x-4">
               <a href="#about" className="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                 About
@@ -36,18 +41,17 @@ const Navbar = ({ darkMode, setDarkMode }: NavbarProps) => {
                 Contact
               </a>
               <button
-                onClick={() => setDarkMode(!darkMode)}
+                onClick={() => dispatch(toggleDarkMode())}
                 className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-gray-700 hover:text-indigo-600 dark:hover:text-white transition-all duration-200 transform hover:scale-110"
               >
-                {darkMode ? '🌞' : '🌙'}
+                {darkMode ? '🌙' : '🌞'}
               </button>
             </div>
           </div>
-
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="flex md:hidden">
             <button
-              onClick={toggleMenu}
+              onClick={() => dispatch(toggleMenu())}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white focus:outline-none"
             >
               <svg
@@ -76,7 +80,6 @@ const Navbar = ({ darkMode, setDarkMode }: NavbarProps) => {
           </div>
         </div>
       </div>
-
       {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden">
@@ -91,10 +94,10 @@ const Navbar = ({ darkMode, setDarkMode }: NavbarProps) => {
               Contact
             </a>
             <button
-              onClick={() => setDarkMode(!darkMode)}
+              onClick={() => dispatch(toggleDarkMode())}
               className="w-full text-left px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-md text-base font-medium"
             >
-              {darkMode ? '🌞 Light Mode' : '🌙 Dark Mode'}
+              {darkMode ? '🌙 Dark Mode' : '🌞 Light Mode'}
             </button>
           </div>
         </div>
@@ -103,4 +106,4 @@ const Navbar = ({ darkMode, setDarkMode }: NavbarProps) => {
   )
 }
 
-export default Navbar 
+export default Navbar

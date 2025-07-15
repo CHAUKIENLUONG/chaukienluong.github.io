@@ -1,59 +1,24 @@
-import { useState } from 'react'
-import emailjs from '@emailjs/browser'
-
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
+import { useDispatch, useSelector } from 'react-redux'
+import type { RootState } from '../store/store'
+import type { AppDispatch } from '../store/store'
+import { updateFormData, sendEmail } from '../store/slices/contactReducer'
 
 const Contact = () => {
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    message: '',
-  })
-
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null)
+  const dispatch = useDispatch<AppDispatch>()
+  const { formData, isSubmitting, submitStatus } = useSelector(
+    (state: RootState) => state.contact
+  )
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitting(true)
-    setSubmitStatus(null)
-
-    try {
-      await emailjs.send(
-        'service_3nmzb89', // Replace with your EmailJS service ID
-        'template_i66mc8g', // Replace with your EmailJS template ID
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-          to_name: 'Chau Kien Luong', // Replace with your name
-          reply_to: formData.email,
-        },
-        'NKaEqYATtE-LtFLAr' // Replace with your EmailJS public key
-      )
-
-      setSubmitStatus('success')
-      setFormData({ name: '', email: '', message: '' }) // Reset form
-    } catch (error) {
-      console.error('Error sending email:', error)
-      setSubmitStatus('error')
-    } finally {
-      setIsSubmitting(false)
-    }
+    dispatch(sendEmail(formData))
   }
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    dispatch(updateFormData({ name, value }))
   }
 
   return (
@@ -61,22 +26,22 @@ const Contact = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2
-          data-aos="fade-up"
+            data-aos="fade-up"
             className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
             Get in Touch
           </h2>
-          <p 
-          data-aos="fade-up"
-           className="mt-4 text-lg text-gray-500 dark:text-gray-300">
+          <p
+            data-aos="fade-up"
+            className="mt-4 text-lg text-gray-500 dark:text-gray-300">
             Have a question or want to work together? Feel free to reach out!
           </p>
         </div>
 
         <div className="mt-12 max-w-lg mx-auto">
           <form
-          data-aos="zoom-in"
-          data-aos-delay="200"
-           onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
+            data-aos="zoom-in"
+            data-aos-delay="200"
+            onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
             <div>
               <label
                 htmlFor="name"
@@ -147,9 +112,8 @@ const Contact = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
-                  isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
+                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
               >
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
@@ -222,4 +186,4 @@ const Contact = () => {
   )
 }
 
-export default Contact 
+export default Contact

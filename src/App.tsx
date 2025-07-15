@@ -1,6 +1,9 @@
 import { useState, Suspense, lazy } from 'react'
 import Navbar from './components/Navbar'
 import './assets/css/style.css'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
+import { useEffect } from 'react'
 
 // Lazy load components
 const Hero = lazy(() => import('./components/Hero'))
@@ -17,30 +20,26 @@ const LoadingSpinner = () => (
 )
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false)
-
   return (
-    <div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
-      <div className="bg-white dark:bg-gray-900 transition-colors duration-300">
-        <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-        <main>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Hero />
-          </Suspense>
-          <Suspense fallback={<LoadingSpinner />}>
-            <About />
-          </Suspense>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Projects />
-          </Suspense>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Contact />
-          </Suspense>
-        </main>
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+      <Navbar />
+      <main className="pt-16">
         <Suspense fallback={<LoadingSpinner />}>
-          <Footer />
+          <Hero />
         </Suspense>
-      </div>
+        <Suspense fallback={<LoadingSpinner />}>
+          <About />
+        </Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Projects />
+        </Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Contact />
+        </Suspense>
+      </main>
+      <Suspense fallback={<LoadingSpinner />}>
+        <Footer />
+      </Suspense>
     </div>
   )
 }

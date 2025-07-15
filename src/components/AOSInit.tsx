@@ -6,11 +6,11 @@ const AOSInit = () => {
   useEffect(() => {
     AOS.init({
       duration: 500,
-      once: false,
+      once: true,
       mirror: true,
       easing: 'ease-in-out',
       offset: 150,
-      disable: 'mobile',
+      disable: false,
       startEvent: 'DOMContentLoaded',
       disableMutationObserver: false,
       delay: 0,
