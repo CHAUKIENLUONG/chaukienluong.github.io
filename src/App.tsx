@@ -1,9 +1,7 @@
-import { useState, Suspense, lazy } from 'react'
+import { Suspense, lazy } from 'react'
 import Navbar from './components/Navbar'
 import './assets/css/style.css'
-import AOS from 'aos'
 import 'aos/dist/aos.css'
-import { useEffect } from 'react'
 
 // Lazy load components
 const Hero = lazy(() => import('./components/Hero'))
