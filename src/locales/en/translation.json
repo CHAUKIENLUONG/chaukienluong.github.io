@@ -1,0 +1,68 @@
+{
+    "hero": {
+        "greeting": "Hi, I'm",
+        "description": "A motivated fresher frontend developer with a strong interest in building user-friendly and accessible web applications. Currently focused on mastering modern frontend technologies, with a long-term goal of becoming a full-stack developer."
+    },
+    "about": {
+        "title": "About Me",
+        "description": "I'm a passionate developer with a strong foundation in web development and a keen eye for creating engaging user experiences.",
+        "sectionTitles": {
+            "experience": "Experience",
+            "skills": "Skills"
+        },
+        "skillList": {
+            "react": "React",
+            "typescript": "TypeScript",
+            "nodejs": "Node.js",
+            "tailwind": "Tailwind CSS"
+        },
+        "experiences": {
+            "frontend": {
+                "title": "Front-End Mastery with React.js – 10+ Real-World Projects",
+                "company": "Cybersoft – in collaboration with Hutech University",
+                "description": "Completed 10+ real-world web development projects from basic to advanced using React.js, JavaScript ES6, HTML5, and CSS3.\n\nGained proficiency in component-based architecture, state management with React Hooks, and API integration.\n\nApplied popular libraries such as React Router, Axios, Bootstrap/Tailwind CSS.\n\nDeveloped skills in requirement analysis, UI optimization, and project deployment."
+            }
+        }
+    },
+    "projects": {
+        "title": "My Projects",
+        "subtitle": "Here are some of my recent works",
+        "warehouse": {
+            "title": "Web Warehouse Management",
+            "description": "A comprehensive web application for managing warehouse operations, including inventory tracking and order management."
+        },
+        "cinema": {
+            "title": "Web Cinema ticket booking",
+            "description": "A responsive web application for booking cinema tickets online."
+        },
+        "game": {
+            "title": "Web Game Online",
+            "description": "An online platform for playing and purchasing video games, featuring user reviews and ratings."
+        }
+    },
+    "contact": {
+        "title": "Get in Touch",
+        "subtitle": "Have a question or want to work together? Feel free to reach out!",
+        "form": {
+            "name": "Name",
+            "email": "Email",
+            "message": "Message",
+            "submit": "Send Message",
+            "sending": "Sending...",
+            "success": "Message sent successfully! I'll get back to you soon.",
+            "error": "Failed to send message. Please try again later."
+        }
+    },
+    "footer": {
+        "rights": "All rights reserved.",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service"
+    },
+    "nav": {
+        "about": "About",
+        "projects": "Projects",
+        "contact": "Contact",
+        "darkMode": "Dark Mode",
+        "lightMode": "Light Mode"
+    }
+}

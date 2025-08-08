@@ -2,12 +2,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../store/store'
 import type { AppDispatch } from '../store/store'
 import { updateFormData, sendEmail } from '../store/slices/contactReducer'
+import { useTranslation } from 'react-i18next'
 
 const Contact = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { formData, isSubmitting, submitStatus } = useSelector(
     (state: RootState) => state.contact
   )
+  const { t } = useTranslation()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,12 +30,12 @@ const Contact = () => {
           <h2
             data-aos="fade-up"
             className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
-            Get in Touch
+            {t('contact.title')}
           </h2>
           <p
             data-aos="fade-up"
             className="mt-4 text-lg text-gray-500 dark:text-gray-300">
-            Have a question or want to work together? Feel free to reach out!
+            {t('contact.subtitle')}
           </p>
         </div>
 
@@ -47,7 +49,7 @@ const Contact = () => {
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                Name
+                {t('contact.form.name')}
               </label>
               <input
                 type="text"
@@ -65,7 +67,7 @@ const Contact = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                Email
+                {t('contact.form.email')}
               </label>
               <input
                 type="email"
@@ -83,7 +85,7 @@ const Contact = () => {
                 htmlFor="message"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                Message
+                {t('contact.form.message')}
               </label>
               <textarea
                 name="message"
@@ -99,12 +101,12 @@ const Contact = () => {
             {/* Add status messages */}
             {submitStatus === 'success' && (
               <div className="p-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-900 dark:text-green-300">
-                Message sent successfully! I'll get back to you soon.
+                {t('contact.form.success')}
               </div>
             )}
             {submitStatus === 'error' && (
               <div className="p-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-900 dark:text-red-300">
-                Failed to send message. Please try again later.
+                {t('contact.form.error')}
               </div>
             )}
 
@@ -115,7 +117,7 @@ const Contact = () => {
                 className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
               >
-                {isSubmitting ? 'Sending...' : 'Send Message'}
+                {isSubmitting ? t('contact.form.sending') : t('contact.form.submit')}
               </button>
             </div>
           </form>

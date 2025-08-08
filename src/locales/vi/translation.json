@@ -1,0 +1,68 @@
+{
+    "hero": {
+        "greeting": "Xin chào, tôi là",
+        "description": "Một lập trình viên frontend mới với niềm đam mê xây dựng các ứng dụng web thân thiện và dễ tiếp cận. Hiện đang tập trung vào việc nắm vững các công nghệ frontend hiện đại, với mục tiêu dài hạn trở thành một lập trình viên full-stack."
+    },
+    "about": {
+        "title": "Về Tôi",
+        "description": "Tôi là một lập trình viên đam mê với nền tảng vững chắc về phát triển web và có con mắt nhạy bén trong việc tạo ra trải nghiệm người dùng hấp dẫn.",
+        "sectionTitles": {
+            "experience": "Kinh Nghiệm",
+            "skills": "Kỹ Năng"
+        },
+        "skillList": {
+            "react": "React",
+            "typescript": "TypeScript",
+            "nodejs": "Node.js",
+            "tailwind": "Tailwind CSS"
+        },
+        "experiences": {
+            "frontend": {
+                "title": "Làm Chủ Front-End với React.js - 10+ Dự Án Thực Tế",
+                "company": "Cybersoft - phối hợp với Đại học Hutech",
+                "description": "Hoàn thành 10+ dự án phát triển web thực tế từ cơ bản đến nâng cao sử dụng React.js, JavaScript ES6, HTML5 và CSS3.\n\nThành thạo kiến trúc component, quản lý state với React Hooks và tích hợp API.\n\nÁp dụng các thư viện phổ biến như React Router, Axios, Bootstrap/Tailwind CSS.\n\nPhát triển kỹ năng phân tích yêu cầu, tối ưu hóa UI và triển khai dự án."
+            }
+        }
+    },
+    "projects": {
+        "title": "Dự Án Của Tôi",
+        "subtitle": "Đây là một số dự án gần đây của tôi",
+        "warehouse": {
+            "title": "Quản Lý Kho Web",
+            "description": "Ứng dụng web toàn diện để quản lý hoạt động kho, bao gồm theo dõi hàng tồn kho và quản lý đơn hàng."
+        },
+        "cinema": {
+            "title": "Đặt Vé Xem Phim Trực Tuyến",
+            "description": "Ứng dụng web đáp ứng để đặt vé xem phim trực tuyến."
+        },
+        "game": {
+            "title": "Web Game Trực Tuyến",
+            "description": "Nền tảng trực tuyến để chơi và mua game, có tính năng đánh giá và xếp hạng của người dùng."
+        }
+    },
+    "contact": {
+        "title": "Liên Hệ",
+        "subtitle": "Có câu hỏi hoặc muốn hợp tác? Hãy liên hệ với tôi!",
+        "form": {
+            "name": "Họ Tên",
+            "email": "Email",
+            "message": "Tin Nhắn",
+            "submit": "Gửi Tin Nhắn",
+            "sending": "Đang gửi...",
+            "success": "Gửi tin nhắn thành công! Tôi sẽ phản hồi sớm.",
+            "error": "Không thể gửi tin nhắn. Vui lòng thử lại sau."
+        }
+    },
+    "footer": {
+        "rights": "Đã đăng ký bản quyền.",
+        "privacy": "Chính Sách Bảo Mật",
+        "terms": "Điều Khoản Dịch Vụ"
+    },
+    "nav": {
+        "about": "Về Tôi",
+        "projects": "Dự Án",
+        "contact": "Liên Hệ",
+        "darkMode": "Chế Độ Tối",
+        "lightMode": "Chế Độ Sáng"
+    }
+}

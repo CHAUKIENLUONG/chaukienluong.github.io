@@ -1,4 +1,8 @@
+import { useTranslation } from 'react-i18next';
+
 const Hero = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Background gradient */}
@@ -18,7 +22,7 @@ const Hero = () => {
             data-aos-delay="100"
             className="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl"
           >
-            <span className="block">Hi, I'm</span>
+            <span className="block">{t('hero.greeting')}</span>
             <span className="block pt-3 pb-3 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
               Chau Kien Luong
             </span>
@@ -28,7 +32,7 @@ const Hero = () => {
             data-aos-delay="200"
             className="mt-3 max-w-md mx-auto text-base text-gray-600 dark:text-gray-300 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl"
           >
-            A motivated fresher frontend developer with a strong interest in building user-friendly and accessible web applications. Currently focused on mastering modern frontend technologies, with a long-term goal of becoming a full-stack developer.
+            {t('hero.description')}
           </p>
 
           <div
@@ -40,13 +44,13 @@ const Hero = () => {
               href="#contact"
               className="w-full sm:w-auto flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transform hover:-translate-y-1 transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              Get in touch
+              {t('contact.title')}
             </a>
             <a
               href="#projects"
               className="w-full sm:w-auto flex items-center justify-center px-8 py-3 border border-indigo-200 dark:border-indigo-800 text-base font-medium rounded-full text-indigo-600 dark:text-indigo-400 bg-white dark:bg-gray-800 hover:bg-indigo-50 dark:hover:bg-gray-700 transform hover:-translate-y-1 transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              View my work
+              {t('projects.title')}
             </a>
           </div>
         </div>

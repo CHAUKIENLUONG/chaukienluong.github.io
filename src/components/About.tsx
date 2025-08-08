@@ -1,8 +1,13 @@
 import { useSelector } from 'react-redux'
 import type { RootState } from '../store/store'
+import { useTranslation } from 'react-i18next'
 
 const About = () => {
   const skills = useSelector((state: RootState) => state.about.skills)
+  const { t } = useTranslation()
+  const tKeys = {
+    frontend: 'about.experiences.frontend'
+  }
 
   return (
     <section id="about" className="py-20 bg-white dark:bg-gray-900">
@@ -12,7 +17,7 @@ const About = () => {
             data-aos="fade-up"
             className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl"
           >
-            About Me
+            {t('about.title')}
           </h2>
           <div
             data-aos="zoom-in"
@@ -30,15 +35,14 @@ const About = () => {
             data-aos-delay="200"
             className="mt-4 text-lg text-gray-500 dark:text-gray-300"
           >
-            I'm a passionate developer with a strong foundation in web development and a keen eye for creating engaging user experiences.
+            {t('about.description')}
           </p>
         </div>
 
         <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
           <div data-aos="fade-right" data-aos-delay="300">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Experience
-            </h3>
+              {t('about.sectionTitles.experience')}</h3>
             <div className="space-y-6">
               <div
                 data-aos="fade-up"
@@ -46,26 +50,11 @@ const About = () => {
                 className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg"
               >
                 <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Fresher Developer
+                  {t(`${tKeys.frontend}.title`)}
                 </h4>
-                <p className="text-gray-600 dark:text-gray-300">Company Name • 2020 - Present</p>
+                <p className="text-gray-600 dark:text-gray-300">{t(`${tKeys.frontend}.company`)}</p>
                 <p className="mt-2 text-gray-500 dark:text-gray-400">
-                  Led the development of multiple web applications using React and Node.js.
-                  Implemented CI/CD pipelines and improved team productivity by 40%.
-                </p>
-              </div>
-              <div
-                data-aos="fade-up"
-                data-aos-delay="600"
-                className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg"
-              >
-                <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Frontend Developer
-                </h4>
-                <p className="text-gray-600 dark:text-gray-300">Previous Company • 2018 - 2020</p>
-                <p className="mt-2 text-gray-500 dark:text-gray-400">
-                  Developed and maintained web applications using modern JavaScript frameworks.
-                  Collaborated with design teams to implement responsive and accessible UIs.
+                  {t(`${tKeys.frontend}.description`)}
                 </p>
               </div>
             </div>
@@ -73,7 +62,7 @@ const About = () => {
 
           <div data-aos="fade-left" data-aos-delay="300">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Skills
+              {t('about.sectionTitles.skills')}
             </h3>
             <div className="space-y-4">
               {skills.map((skill, index) => (
@@ -83,7 +72,9 @@ const About = () => {
                   data-aos-delay={400 + index * 100}
                 >
                   <div className="flex justify-between mb-1">
-                    <span className="text-gray-700 dark:text-gray-300">{skill.name}</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      {skill.nameKey ? t(skill.nameKey) : skill.name}
+                    </span>
                     <span className="text-gray-600 dark:text-gray-400">{skill.level}</span>
                   </div>
                   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">

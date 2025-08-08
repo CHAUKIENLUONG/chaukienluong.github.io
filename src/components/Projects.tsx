@@ -1,8 +1,10 @@
 import { useSelector } from 'react-redux'
 import type { RootState } from '../store/store'
+import { useTranslation } from 'react-i18next'
 
 const Projects = () => {
   const projects = useSelector((state: RootState) => state.projects.projects)
+  const { t } = useTranslation()
 
   return (
     <section id="projects" className="py-20 bg-gray-50 dark:bg-gray-800">
@@ -12,14 +14,14 @@ const Projects = () => {
             data-aos="fade-up"
             className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl"
           >
-            My Projects
+            {t('projects.title')}
           </h2>
           <p
             data-aos="fade-up"
             data-aos-delay="200"
             className="mt-4 text-lg text-gray-500 dark:text-gray-300"
           >
-            Here are some of my recent works
+            {t('projects.subtitle')}
           </p>
         </div>
 
@@ -40,10 +42,10 @@ const Projects = () => {
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  {project.title}
+                  {t(project.titleKey)}
                 </h3>
                 <p className="mt-2 text-gray-500 dark:text-gray-300">
-                  {project.description}
+                  {t(project.descriptionKey)}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {project.technologies.map((tech) => (

@@ -2,12 +2,36 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState, AppDispatch } from '../store/store'
 import { toggleMenu, toggleDarkMode } from '../store/slices/navbarReducer'
+import { setLanguage } from '../store/slices/languageSlice'
+import { useTranslation } from 'react-i18next'
 
 
 const Navbar = () => {
   const dispatch = useDispatch<AppDispatch>()
   const isMenuOpen = useSelector((state: RootState) => state.navbar.isMenuOpen)
   const darkMode = useSelector((state: RootState) => state.navbar.darkMode)
+  const currentLanguage = useSelector((state: RootState) => state.language.currentLanguage)
+  const { i18n, t } = useTranslation()
+
+  // Khởi tạo ngôn ngữ khi component mount
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('i18nextLng')
+    if (savedLanguage) {
+      dispatch(setLanguage(savedLanguage))
+      i18n.changeLanguage(savedLanguage)
+    } else {
+      dispatch(setLanguage('en'))
+      i18n.changeLanguage('en')
+    }
+  }, [])
+
+  const toggleLanguage = () => {
+    const newLang = currentLanguage === 'en' ? 'vi' : 'en'
+    dispatch(setLanguage(newLang))
+    i18n.changeLanguage(newLang)
+    localStorage.setItem('i18nextLng', newLang)
+    window.location.reload() // Reload để đảm bảo tất cả components được cập nhật
+  }
 
   // Sync darkMode state to <html> class for Tailwind dark mode
   useEffect(() => {
@@ -32,19 +56,25 @@ const Navbar = () => {
           <div className="hidden md:flex">
             <div className="ml-10 flex items-baseline space-x-4">
               <a href="#about" className="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                About
+                {t('nav.about')}
               </a>
               <a href="#projects" className="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                Projects
+                {t('nav.projects')}
               </a>
               <a href="#contact" className="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                Contact
+                {t('nav.contact')}
               </a>
               <button
                 onClick={() => dispatch(toggleDarkMode())}
                 className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-gray-700 hover:text-indigo-600 dark:hover:text-white transition-all duration-200 transform hover:scale-110"
               >
                 {darkMode ? '🌙' : '🌞'}
+              </button>
+              <button
+                onClick={toggleLanguage}
+                className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-gray-700 hover:text-indigo-600 dark:hover:text-white transition-all duration-200 transform hover:scale-110"
+              >
+                {currentLanguage === 'en' ? '🇺🇸' : '🇻🇳'}
               </button>
             </div>
           </div>
@@ -85,19 +115,25 @@ const Navbar = () => {
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <a href="#about" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-              About
+              {t('nav.about')}
             </a>
             <a href="#projects" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-              Projects
+              {t('nav.projects')}
             </a>
             <a href="#contact" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-              Contact
+              {t('nav.contact')}
             </a>
             <button
               onClick={() => dispatch(toggleDarkMode())}
               className="w-full text-left px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-md text-base font-medium"
             >
               {darkMode ? '🌙 Dark Mode' : '🌞 Light Mode'}
+            </button>
+            <button
+              onClick={toggleLanguage}
+              className="w-full text-left px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-md text-base font-medium"
+            >
+              {currentLanguage === 'en' ? '🇻🇳 Tiếng Việt' : '🇺🇸 English'}
             </button>
           </div>
         </div>

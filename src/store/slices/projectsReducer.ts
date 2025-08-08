@@ -7,6 +7,8 @@ export interface Project {
     image: string;
     technologies: string[];
     github: string;
+    titleKey: string; // key for translation
+    descriptionKey: string; // key for translation
 }
 
 interface ProjectsState {
@@ -21,6 +23,8 @@ const initialState: ProjectsState = {
             image: 'img/warehouse.png',
             technologies: ['React', 'SCSS', 'Node.js', 'MySQL'],
             github: 'https://github.com/CHAUKIENLUONG/client-warehouse-management-web.git',
+            titleKey: 'projects.warehouse.title',
+            descriptionKey: 'projects.warehouse.description'
         },
         {
             title: 'Web Cinema ticket booking',
@@ -28,6 +32,8 @@ const initialState: ProjectsState = {
             image: 'img/cinema.png',
             technologies: ['HTML', 'CSS', 'JavaScript', 'SCSS', 'C#', 'ASP.NET Core', 'SQL Server'],
             github: 'https://github.com/CHAUKIENLUONG/B-talk.git',
+            titleKey: 'projects.cinema.title',
+            descriptionKey: 'projects.cinema.description'
         },
         {
             title: 'Web Game Online',
@@ -35,6 +41,8 @@ const initialState: ProjectsState = {
             image: 'img/webGame.png',
             technologies: ['HTML', 'CSS', 'JavaScript', 'PHP', 'Laravel', 'MySQL'],
             github: 'https://github.com/nkhoaa/laravel-web-game.git',
+            titleKey: 'projects.game.title',
+            descriptionKey: 'projects.game.description'
         },
     ],
 };
