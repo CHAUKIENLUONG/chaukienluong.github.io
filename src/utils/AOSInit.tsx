@@ -6,8 +6,8 @@ const AOSInit = () => {
   useEffect(() => {
     AOS.init({
       duration: 500,
-      once: false,
-      mirror: true,
+      once: true,
+      mirror: false,
       easing: 'ease-in-out',
       offset: 150,
       disable: false,

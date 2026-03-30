@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { I18nextProvider } from 'react-i18next'
 import './index.css'
 import App from './App.tsx'
-import AOSInit from './components/AOSInit'
+import AOSInit from './utils/AOSInit.tsx'
 import { store } from './store/store'
 import i18n from './i18n'
 

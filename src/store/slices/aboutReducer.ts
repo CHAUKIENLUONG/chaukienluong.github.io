@@ -27,6 +27,8 @@ const initialState: AboutState = {
         { name: 'TypeScript', level: '70%', nameKey: 'about.skillList.typescript' },
         { name: 'Node.js', level: '80%', nameKey: 'about.skillList.nodejs' },
         { name: 'Tailwind CSS', level: '90%', nameKey: 'about.skillList.tailwind' },
+        { name: 'NextJs', level: '60%', nameKey: 'about.skillList.nextjs' },
+        { name: 'Ant Design', level: '70%', nameKey: 'about.skillList.antdesign' },
     ],
     experiences: [
         {

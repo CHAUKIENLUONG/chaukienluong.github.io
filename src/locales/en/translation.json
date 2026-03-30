@@ -14,7 +14,9 @@
             "react": "React",
             "typescript": "TypeScript",
             "nodejs": "Node.js",
-            "tailwind": "Tailwind CSS"
+            "tailwind": "Tailwind CSS",
+            "nextjs": "NextJs",
+            "antdesign": "Ant Design"
         },
         "experiences": {
             "frontend": {
