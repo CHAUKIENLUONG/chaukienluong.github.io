@@ -1,40 +1,59 @@
 {
-    "hero": {
-        "greeting": "Hi, I'm",
-        "description": "A motivated fresher frontend developer with a strong interest in building user-friendly and accessible web applications. Currently focused on mastering modern frontend technologies, with a long-term goal of becoming a full-stack developer."
+    "nav": {
+        "home": "Home",
+        "experience": "Experience",
+        "projects": "Projects",
+        "contact": "Contact",
+        "darkMode": "Dark Mode",
+        "lightMode": "Light Mode"
     },
-    "about": {
-        "title": "About Me",
-        "description": "I'm a passionate developer with a strong foundation in web development and a keen eye for creating engaging user experiences.",
-        "sectionTitles": {
-            "experience": "Experience",
-            "skills": "Skills"
-        },
-        "skillList": {
-            "react": "React",
-            "typescript": "TypeScript",
-            "nodejs": "Node.js",
-            "tailwind": "Tailwind CSS",
-            "nextjs": "NextJs",
-            "antdesign": "Ant Design"
-        },
-        "experiences": {
-            "frontend": {
-                "title": "Front-End Mastery with React.js – 10+ Real-World Projects",
-                "company": "Cybersoft – in collaboration with Hutech University",
-                "description": "Completed 10+ real-world web development projects from basic to advanced using React.js, JavaScript ES6, HTML5, and CSS3.\n\nGained proficiency in component-based architecture, state management with React Hooks, and API integration.\n\nApplied popular libraries such as React Router, Axios, Bootstrap/Tailwind CSS.\n\nDeveloped skills in requirement analysis, UI optimization, and project deployment."
+    "hero": {
+        "designEngineering": "Frontend Developer",
+        "role": "PRINCIPAL ENGINEER",
+        "description": "A motivated fresher frontend developer with a strong interest in building user-friendly and accessible web applications. Currently focused on mastering modern frontend technologies, with a long-term goal of becoming a full-stack developer.",
+        "viewProjects": "Download CV",
+        "contactMe": "Let's Talk"
+    },
+    "experience": {
+        "title": "Experience",
+        "jobs": {
+            "mebisoft": {
+                "company": "MEBISOFT Company",
+                "period": "Nov 2025-Mar 2026",
+                "role": "Front-End Developer Intern",
+                "bullets": [
+                    "Built responsive UI components using React, Next.js, and Ant Design",
+                    "Implemented business logic for internal systems and CMS platforms",
+                    "Optimized performance by improving component rendering and state management",
+                    "Collaborated with designers via Figma and worked in Agile/Scrum",
+                    "Integrated and tested RESTful APIs for frontend features"
+                ]
+            },
+            "freelancer": {
+                "company": "Freelancer (Chat bot)",
+                "period": "Sep 2025-Oct 2025",
+                "role": "FullStack Developer",
+                "bullets": [
+                    "Developed two separate UIs: an admin dashboard for file/folder management and a chatbot interface for AI interaction",
+                    "Integrated OCR APIs to extract text from documents (Word, Excel, PPTX)",
+                    "Processed and transformed extracted content into structured text for database storage"
+                ]
             }
         }
     },
+    "skills": {
+        "title": "Technical Stack"
+    },
     "projects": {
-        "title": "My Projects",
-        "subtitle": "Here are some of my recent works",
+        "title": "Selected Projects ",
+        "subtitle": "SELECTED PROJECTS",
+        "viewRepository": "View Repository",
         "warehouse": {
             "title": "Web Warehouse Management",
             "description": "A comprehensive web application for managing warehouse operations, including inventory tracking and order management."
         },
         "cinema": {
-            "title": "Web Cinema ticket booking",
+            "title": "Web Cinema Ticket Booking",
             "description": "A responsive web application for booking cinema tickets online."
         },
         "game": {
@@ -43,28 +62,19 @@
         }
     },
     "contact": {
-        "title": "Get in Touch",
-        "subtitle": "Have a question or want to work together? Feel free to reach out!",
+        "title": "Initiate",
+        "subtitle": "Protocol",
+        "description": "Have a complex project that needs architectural precision? Drop a message and let's build the future together.",
+        "email": "ckluong21@gmail.com",
+        "location": "Vietnam / Global",
         "form": {
             "name": "Name",
-            "email": "Email",
-            "message": "Message",
-            "submit": "Send Message",
-            "sending": "Sending...",
-            "success": "Message sent successfully! I'll get back to you soon.",
-            "error": "Failed to send message. Please try again later."
+            "email": "Email Address",
+            "message": "Your Message",
+            "submit": "Transmit Message",
+            "sending": "Transmitting...",
+            "success": "Protocol initiated. I will respond within 24 cycles.",
+            "error": "Transmission failure. Please try another channel."
         }
-    },
-    "footer": {
-        "rights": "All rights reserved.",
-        "privacy": "Privacy Policy",
-        "terms": "Terms of Service"
-    },
-    "nav": {
-        "about": "About",
-        "projects": "Projects",
-        "contact": "Contact",
-        "darkMode": "Dark Mode",
-        "lightMode": "Light Mode"
     }
 }

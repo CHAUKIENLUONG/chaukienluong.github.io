@@ -1,70 +1,80 @@
 {
-    "hero": {
-        "greeting": "Xin chào, tôi là",
-        "description": "Một lập trình viên frontend mới với niềm đam mê xây dựng các ứng dụng web thân thiện và dễ tiếp cận. Hiện đang tập trung vào việc nắm vững các công nghệ frontend hiện đại, với mục tiêu dài hạn trở thành một lập trình viên full-stack."
+    "nav": {
+        "home": "Trang chủ",
+        "experience": "Kinh nghiệm",
+        "projects": "Dự án",
+        "contact": "Liên hệ",
+        "darkMode": "Chế độ tối",
+        "lightMode": "Chế độ sáng"
     },
-    "about": {
-        "title": "Về Tôi",
-        "description": "Tôi là một lập trình viên đam mê với nền tảng vững chắc về phát triển web và có con mắt nhạy bén trong việc tạo ra trải nghiệm người dùng hấp dẫn.",
-        "sectionTitles": {
-            "experience": "Kinh Nghiệm",
-            "skills": "Kỹ Năng"
-        },
-        "skillList": {
-            "react": "React",
-            "typescript": "TypeScript",
-            "nodejs": "Node.js",
-            "tailwind": "Tailwind CSS",
-            "nextjs": "NextJs",
-            "antdesign": "Ant Design"
-        },
-        "experiences": {
-            "frontend": {
-                "title": "Làm Chủ Front-End với React.js - 10+ Dự Án Thực Tế",
-                "company": "Cybersoft - phối hợp với Đại học Hutech",
-                "description": "Hoàn thành 10+ dự án phát triển web thực tế từ cơ bản đến nâng cao sử dụng React.js, JavaScript ES6, HTML5 và CSS3.\n\nThành thạo kiến trúc component, quản lý state với React Hooks và tích hợp API.\n\nÁp dụng các thư viện phổ biến như React Router, Axios, Bootstrap/Tailwind CSS.\n\nPhát triển kỹ năng phân tích yêu cầu, tối ưu hóa UI và triển khai dự án."
+    "hero": {
+        "designEngineering": "Frontend Developer",
+        "role": "Kỹ sư chính",
+        "description": "Một lập trình viên frontend mới với niềm đam mê xây dựng các ứng dụng web thân thiện và dễ tiếp cận. Hiện đang tập trung vào việc nắm vững các công nghệ frontend hiện đại, với mục tiêu dài hạn trở thành một lập trình viên full-stack.",
+        "viewProjects": "TẢI CV",
+        "contactMe": "LIÊN HỆ"
+    },
+    "experience": {
+        "title": "Kinh nghiệm",
+        "jobs": {
+            "mebisoft": {
+                "company": "Công ty MEBISOFT",
+                "period": "Thg 11 2025-Thg 3 2026",
+                "role": "Thực tập sinh Front-End Developer",
+                "bullets": [
+                    "Xây dựng các thành phần giao diện responsive bằng React, Next.js và Ant Design",
+                    "Triển khai business logic cho các hệ thống nội bộ và nền tảng CMS",
+                    "Tối ưu hiệu năng bằng cách cải thiện việc render component và quản lý state",
+                    "Phối hợp với designer qua Figma và làm việc theo quy trình Agile/Scrum",
+                    "Tích hợp và kiểm thử RESTful API cho các tính năng frontend"
+                ]
+            },
+            "freelancer": {
+                "company": "Freelancer (Chat bot)",
+                "period": "Thg 9 2025-Thg 10 2025",
+                "role": "FullStack Developer",
+                "bullets": [
+                    "Phát triển hai giao diện riêng biệt: dashboard quản trị để quản lý file/thư mục và giao diện chatbot cho tương tác AI",
+                    "Tích hợp OCR API để trích xuất văn bản từ tài liệu Word, Excel và PPTX",
+                    "Xử lý và chuyển đổi nội dung đã trích xuất thành văn bản có cấu trúc để lưu trữ trong cơ sở dữ liệu"
+                ]
             }
         }
     },
+    "skills": {
+        "title": "Công nghệ sử dụng"
+    },
     "projects": {
-        "title": "Dự Án Của Tôi",
-        "subtitle": "Đây là một số dự án gần đây của tôi",
+        "title": "Dự án tiêu biểu",
+        "subtitle": "DỰ ÁN TIÊU BIỂU",
+        "viewRepository": "XEM REPOSITORY",
         "warehouse": {
-            "title": "Quản Lý Kho Web",
-            "description": "Ứng dụng web toàn diện để quản lý hoạt động kho, bao gồm theo dõi hàng tồn kho và quản lý đơn hàng."
+            "title": "Quản lý kho web",
+            "description": "Một ứng dụng web toàn diện để quản lý các hoạt động kho bãi, bao gồm theo dõi hàng tồn kho và quản lý đơn hàng."
         },
         "cinema": {
-            "title": "Đặt Vé Xem Phim Trực Tuyến",
-            "description": "Ứng dụng web đáp ứng để đặt vé xem phim trực tuyến."
+            "title": "Đặt vé xem phim web",
+            "description": "Một ứng dụng web đáp ứng để đặt vé xem phim trực tuyến."
         },
         "game": {
-            "title": "Web Game Trực Tuyến",
-            "description": "Nền tảng trực tuyến để chơi và mua game, có tính năng đánh giá và xếp hạng của người dùng."
+            "title": "Trò chơi trực tuyến web",
+            "description": "Một nền tảng trực tuyến để chơi và mua các trò chơi video, bao gồm các đánh giá và xếp hạng của người dùng."
         }
     },
     "contact": {
-        "title": "Liên Hệ",
-        "subtitle": "Có câu hỏi hoặc muốn hợp tác? Hãy liên hệ với tôi!",
+        "title": "Liên hệ",
+        "subtitle": "Hãy cùng xây dựng điều gì đó bền vững",
+        "description": "Bạn có một dự án cần sự chính xác trong kiến trúc và triển khai? Hãy gửi cho tôi một lời nhắn và cùng nhau xây dựng điều gì đó thật khác biệt.",
+        "email": "ckluong21@gmail.com",
+        "location": "Việt Nam / Toàn cầu",
         "form": {
-            "name": "Họ Tên",
+            "name": "Họ tên",
             "email": "Email",
-            "message": "Tin Nhắn",
-            "submit": "Gửi Tin Nhắn",
+            "message": "Tin nhắn",
+            "submit": "Gửi tin nhắn",
             "sending": "Đang gửi...",
-            "success": "Gửi tin nhắn thành công! Tôi sẽ phản hồi sớm.",
-            "error": "Không thể gửi tin nhắn. Vui lòng thử lại sau."
+            "success": "Tin nhắn đã được gửi thành công. Tôi sẽ phản hồi sớm.",
+            "error": "Gửi tin nhắn thất bại. Vui lòng thử lại sau."
         }
-    },
-    "footer": {
-        "rights": "Đã đăng ký bản quyền.",
-        "privacy": "Chính Sách Bảo Mật",
-        "terms": "Điều Khoản Dịch Vụ"
-    },
-    "nav": {
-        "about": "Về Tôi",
-        "projects": "Dự Án",
-        "contact": "Liên Hệ",
-        "darkMode": "Chế Độ Tối",
-        "lightMode": "Chế Độ Sáng"
     }
 }

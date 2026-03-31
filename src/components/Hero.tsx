@@ -1,62 +1,70 @@
 import { useTranslation } from 'react-i18next';
+import avatarPortrait from '../assets/img/avatar.png';
+import cvFile from '../assets/CV_CHAU-KIEN-LUONG_Frontend-Developer.pdf';
 
 const Hero = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-indigo-50/50 to-white dark:from-gray-900 dark:via-gray-800/50 dark:to-gray-900" />
-
-      {/* Animated circles */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-indigo-100 dark:bg-indigo-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-100 dark:bg-purple-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-1000" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-100 dark:bg-pink-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 relative z-10">
-        <div className="text-center">
-          <h1
-            data-aos="fade-down"
-            data-aos-delay="100"
-            className="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl"
+    <section className="relative min-h-screen overflow-hidden px-6 pt-24 md:px-20 lg:px-32" id="home">
+      <div className="pointer-events-none absolute inset-x-0 top-16 h-[32rem] bg-[radial-gradient(circle_at_72%_35%,rgba(0,242,255,0.2),transparent_24%),radial-gradient(circle_at_78%_55%,rgba(255,255,255,0.08),transparent_20%),radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.02),transparent_60%)]" />
+      <div className="relative flex min-h-[calc(100vh-6rem)] items-center">
+        <div className="asymmetric-grid w-full items-center gap-y-14 lg:gap-0">
+          <div
+            data-aos="fade-right"
+            className="order-2 col-span-12 flex flex-col justify-center lg:order-1 lg:col-span-6"
           >
-            <span className="block">{t('hero.greeting')}</span>
-            <span className="block pt-3 pb-3 bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
-              Chau Kien Luong
+            <span className="mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              <span className="h-px w-8 bg-primary/30"></span>
+              {t('hero.designEngineering') || 'Frontend Developer'}
             </span>
-          </h1>
-          <p
-            data-aos="fade-up"
-            data-aos-delay="200"
-            className="mt-3 max-w-md mx-auto text-base text-gray-600 dark:text-gray-300 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl"
-          >
-            {t('hero.description')}
-          </p>
+            <h1 className="mb-8 text-[3.5rem] font-black leading-[0.9] tracking-tighter text-tertiary md:text-[5rem] lg:text-[7rem]">
+              CHAU KIEN<br /><span className="text-glow-primary text-primary uppercase">LUONG</span>
+            </h1>
+            <div className="max-w-xl">
+              <p className="mb-10 max-w-md text-lg leading-relaxed text-on-surface-variant">
+                {t('hero.description') || 'A motivated fresher frontend developer with a strong interest in building user-friendly and accessible web applications. Currently focused on mastering modern frontend technologies, with a long-term goal of becoming a full-stack developer.'}
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <a
+                  href={cvFile}
+                  download="CV_CHAU-KIEN-LUONG_Frontend-Developer.pdf"
+                  className="metallic-gradient rounded-xl px-8 py-4 text-sm font-bold uppercase tracking-wider text-on-primary shadow-[0_10px_30px_rgba(0,242,255,0.2)] transition-transform hover:scale-105"
+                >
+                  {t('hero.viewProjects') || 'Download CV'}
+                </a>
+                <a
+                  href="#contact"
+                  className="rounded-xl border border-outline-variant/10 px-8 py-4 text-sm font-bold uppercase tracking-wider text-tertiary transition-colors hover:bg-surface-container-high"
+                >
+                  {t('hero.contactMe') || "Let's Talk"}
+                </a>
+              </div>
+            </div>
+          </div>
 
           <div
-            data-aos="fade-up"
-            data-aos-delay="300"
-            className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8 space-y-4 sm:space-y-0 sm:space-x-4"
+            data-aos="fade-left"
+            className="relative order-1 col-span-12 flex items-center justify-center lg:order-2 lg:col-span-6 lg:justify-end"
           >
-            <a
-              href="#contact"
-              className="w-full sm:w-auto flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transform hover:-translate-y-1 transition-all duration-200 shadow-lg hover:shadow-xl"
-            >
-              {t('contact.title')}
-            </a>
-            <a
-              href="#projects"
-              className="w-full sm:w-auto flex items-center justify-center px-8 py-3 border border-indigo-200 dark:border-indigo-800 text-base font-medium rounded-full text-indigo-600 dark:text-indigo-400 bg-white dark:bg-gray-800 hover:bg-indigo-50 dark:hover:bg-gray-700 transform hover:-translate-y-1 transition-all duration-200 shadow-lg hover:shadow-xl"
-            >
-              {t('projects.title')}
-            </a>
+            <div className="relative isolate flex w-full max-w-[38rem] items-end justify-center lg:justify-end">
+              <div className="pointer-events-none absolute inset-x-[12%] top-[7%] bottom-[15%] rounded-full bg-[radial-gradient(circle_at_center,rgba(0,242,255,0.26),rgba(0,242,255,0.08)_42%,transparent_72%)] blur-3xl" />
+              <div className="pointer-events-none absolute left-[8%] top-[10%] h-20 w-20 rounded-full border border-primary/25 bg-primary/5 md:h-24 md:w-24" />
+              <div className="pointer-events-none absolute right-[12%] top-[18%] h-10 w-10 rounded-full bg-white/10 blur-sm" />
+              <div className="pointer-events-none absolute bottom-[12%] left-[8%] h-16 w-16 rounded-full border border-outline-variant/30" />
+              <div className="pointer-events-none absolute bottom-[6%] left-1/2 h-10 w-[62%] -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
+              <div className="pointer-events-none absolute inset-x-[4%] bottom-[2%] top-[12%] rounded-[2.5rem] border border-outline-variant/15 bg-gradient-to-b from-white/[0.03] via-transparent to-transparent" />
+              <img
+                alt="Chau Kien Luong portrait"
+                className="relative z-10 h-auto w-full max-w-[30rem] object-contain drop-shadow-[0_28px_70px_rgba(0,0,0,0.55)] transition-transform duration-700 md:max-w-[34rem] lg:max-w-[38rem] lg:translate-x-4 lg:scale-110"
+                src={avatarPortrait}
+              />
+            </div>
           </div>
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Hero
+export default Hero;

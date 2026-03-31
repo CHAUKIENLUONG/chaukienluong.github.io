@@ -5,161 +5,44 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Neon Architect is inherently dark */
+    color-scheme: dark; 
   }
 
   body {
-    @apply bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100;
-    background-attachment: fixed;
+    /* Strict adherence to the Neon Architect colors */
+    @apply bg-surface text-on-surface font-sans antialiased;
   }
 }
 
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  /* Light mode variables */
-  --light-primary: #4f46e5;
-  --light-primary-hover: #4338ca;
-  --light-secondary: #f3f4f6;
-  --light-accent: #818cf8;
-  --light-text: #1f2937;
-  --light-text-secondary: #4b5563;
-  --light-border: #e5e7eb;
-  --light-card: #ffffff;
-  --light-card-hover: #f9fafb;
-  --light-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --light-shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-}
-
-/* Light mode specific styles */
-@media (prefers-color-scheme: light) {
-  :root {
-    color: var(--light-text);
-    background-color: #ffffff;
+@layer components {
+  .mono {
+    @apply font-mono;
   }
 
-  body {
-    background-image:
-      radial-gradient(circle at 100% 0%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 0% 100%, rgba(79, 70, 229, 0.08) 0%, transparent 50%);
+  .text-outline {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+    color: transparent;
   }
 
-  a {
-    color: var(--light-primary);
-    transition: color 0.2s ease;
+  /* Ghost border rule for Neon Architect cards */
+  .ghost-border {
+    @apply border border-outline-variant/15;
   }
 
-  a:hover {
-    color: var(--light-primary-hover);
-  }
-
-  button {
-    background-color: var(--light-secondary);
-    color: var(--light-text);
-    transition: all 0.2s ease;
-  }
-
-  button:hover {
-    background-color: var(--light-primary);
-    color: white;
-    transform: translateY(-1px);
-    box-shadow: var(--light-shadow-hover);
-  }
-
-  .card {
-    background-color: var(--light-card);
-    border: 1px solid var(--light-border);
-    box-shadow: var(--light-shadow);
-    transition: all 0.3s ease;
-  }
-
-  .card:hover {
-    background-color: var(--light-card-hover);
-    transform: translateY(-2px);
-    box-shadow: var(--light-shadow-hover);
+  .selection-custom {
+    @apply selection:bg-primary selection:text-on-primary;
   }
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-button:hover {
-  border-color: #646cff;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@keyframes blob {
-  0% {
-    transform: translate(0px, 0px) scale(1);
+@layer utilities {
+  .shadow-glass-ring {
+    box-shadow:
+      0 0 0 1px rgb(185 202 203 / 0.12),
+      0 20px 40px rgb(0 242 255 / 0.08);
   }
 
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
+  .glass-panel {
+    @apply bg-surface-container-highest/60 backdrop-blur-xl shadow-glass-ring;
   }
-
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-
-  100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-}
-
-.animate-blob {
-  animation: blob 7s infinite;
-}
-
-.animation-delay-2000 {
-  animation-delay: 1s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 2s;
 }

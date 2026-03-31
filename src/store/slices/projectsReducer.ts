@@ -11,7 +11,7 @@ export interface Project {
     descriptionKey: string; // key for translation
 }
 
-interface ProjectsState {
+export interface ProjectsState {
     projects: Project[];
 }
 

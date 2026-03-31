@@ -7,70 +7,67 @@ const Projects = () => {
   const { t } = useTranslation()
 
   return (
-    <section id="projects" className="py-20 bg-gray-50 dark:bg-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h2
-            data-aos="fade-up"
-            className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl"
-          >
-            {t('projects.title')}
-          </h2>
-          <p
-            data-aos="fade-up"
-            data-aos-delay="200"
-            className="mt-4 text-lg text-gray-500 dark:text-gray-300"
-          >
-            {t('projects.subtitle')}
-          </p>
+    <section className="py-32 px-6 md:px-20 lg:px-32 bg-surface-container-lowest" id="projects">
+      <div 
+        data-aos="fade-up"
+        className="flex justify-between items-end mb-20"
+      >
+        <div>
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2 block">03 / PROJECTS</span>
+          <h2 className="text-4xl font-bold text-tertiary">{t('projects.title') || 'Selected Projects'}</h2>
         </div>
-
-        <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project, index) => (
-            <div
-              key={project.title}
-              data-aos="fade-up"
-              data-aos-delay={300 + index * 200}
-              className="bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden"
-            >
-              <div className="relative h-48">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover"
+      </div>
+      
+      <div className="grid md:grid-cols-2 gap-16">
+        {projects.map((project, index) => (
+          <div 
+            key={project.title}
+            data-aos="fade-up"
+            data-aos-delay={index * 150}
+            className={`group relative ${index % 2 !== 0 ? 'md:mt-24' : ''}`}
+          >
+            <div className="bg-surface-container-low rounded-xl overflow-hidden mb-8 transition-all duration-500 ghost-border group-hover:shadow-[0_20px_40px_rgba(0,242,255,0.08)] relative">
+              <div className="aspect-video overflow-hidden">
+                <img 
+                    alt={project.title} 
+                    className="w-full h-full object-cover opacity-100 group-hover:scale-105 transition-all duration-700" 
+                    src={project.image}
                 />
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  {t(project.titleKey)}
-                </h3>
-                <p className="mt-2 text-gray-500 dark:text-gray-300">
-                  {t(project.descriptionKey)}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1 text-sm bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 rounded-full"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-6 flex space-x-4">
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                  >
-                    GitHub
-                  </a>
-                </div>
+              {/* Top Glow Edge */}
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </div>
+            <div className="space-y-4">
+              <span className="label-sm uppercase tracking-widest text-[10px] font-bold text-secondary">{project.technologies[0]} / {project.technologies[1]}</span>
+              <h3 className="text-2xl font-bold text-tertiary group-hover:text-primary transition-colors uppercase tracking-tighter">
+                {t(project.titleKey)}
+              </h3>
+              <p className="text-on-surface-variant leading-relaxed max-w-md">
+                {t(project.descriptionKey)}
+              </p>
+              <div className="flex flex-wrap gap-4 pt-2">
+                {project.technologies.map(tech => (
+                   <span key={tech} className="text-[10px] font-bold uppercase tracking-tighter px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded-full group-hover:text-primary transition-colors">
+                        {tech}
+                   </span>
+                ))}
+              </div>
+              <div className="pt-4">
+                <a
+                  className="inline-flex items-center gap-3 rounded-full border border-primary/20 bg-primary/5 px-5 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-primary shadow-[0_10px_30px_rgba(0,242,255,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/45 hover:bg-primary/10 hover:shadow-[0_16px_40px_rgba(0,242,255,0.16)] hover:text-tertiary"
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/20 bg-surface-container-high text-primary transition-colors group-hover:border-primary/40">
+                    <span className="material-symbols-outlined text-[16px]">arrow_outward</span>
+                  </span>
+                  <span>{t('projects.viewRepository') || 'View Repository'}</span>
+                </a>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   )
