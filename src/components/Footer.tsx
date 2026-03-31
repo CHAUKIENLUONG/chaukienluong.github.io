@@ -1,29 +1,15 @@
 const Footer = () => {
   return (
-    <footer className="bg-gray-50 dark:bg-gray-800">
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <p className="text-base text-gray-500 dark:text-gray-300">
-            © {new Date().getFullYear()} Chau Kien Luong. All rights reserved.
-          </p>
-          <div className="mt-4">
-            <a
-              href="#"
-              className="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white mx-4"
-            >
-              Privacy Policy
-            </a>
-            <a
-              href="#"
-              className="text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white mx-4"
-            >
-              Terms of Service
-            </a>
-          </div>
-        </div>
+    <footer className="py-12 px-6 md:px-20 lg:px-32 border-t border-outline-variant/10 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-6">
+      <div className="text-on-surface-variant text-[10px] uppercase font-bold tracking-widest">
+        © 2026 CKL.ARCHITECT / All Systems Operational
+      </div>
+      <div className="flex gap-8 text-[10px] uppercase font-bold tracking-widest text-on-surface-variant">
+        <a className="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+        <a className="hover:text-primary transition-colors" href="#">Status: Stable</a>
       </div>
     </footer>
   )
 }
 
-export default Footer 
+export default Footer

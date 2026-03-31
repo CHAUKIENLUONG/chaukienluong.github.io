@@ -1,52 +1,61 @@
-html,
-body {
-  overflow-x: hidden;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-main {
-  min-width: 100vw;
-  margin: 0;
-  box-sizing: border-box;
-  overflow-x: hidden;
-  position: relative;
-  background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
-  min-height: 100vh;
-}
-
-main::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image:
-    radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 40px),
-    radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 30px),
-    radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 40px);
-  background-size: 550px 550px, 350px 350px, 250px 250px;
-  background-position: 0 0, 40px 60px, 130px 270px;
-  animation: twinkle 8s ease-in-out infinite;
-  opacity: 0.5;
-  z-index: 11;
-  pointer-events: none;
-}
-
-@keyframes twinkle {
-  0% {
-    opacity: 0.3;
+@layer base {
+  html,
+  body {
+    overflow-x: hidden;
+    background-color: #131314; /* surface-dim */
   }
 
-  50% {
-    opacity: 0.7;
-  }
-
-  100% {
-    opacity: 0.3;
+  body {
+    min-height: max(884px, 100dvh);
   }
 }
 
-/* Utility class to hide horizontal scroll if needed */
-.no-horizontal-scroll {
-  overflow-x: hidden !important;
+@layer components {
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  
+  .glass-nav {
+    backdrop-filter: blur(16px);
+  }
+  
+  .metallic-gradient {
+    background: linear-gradient(135deg, #e1fdff 0%, #00f2ff 100%);
+  }
+  
+  .asymmetric-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  
+  @media (min-width: 1024px) {
+    .asymmetric-grid {
+      grid-template-columns: repeat(12, 1fr);
+    }
+  }
+  
+  .ghost-border {
+    border: 1px solid rgba(58, 73, 75, 0.15); /* outline-variant 15% */
+  }
+  
+  .ghost-border:hover {
+    border-color: rgba(0, 242, 255, 0.4); /* primary 40% */
+  }
+  
+  .text-glow-primary {
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+  }
+
+  .no-horizontal-scroll {
+    overflow-x: hidden !important;
+  }
+
+  .selection-custom::selection {
+    background-color: #00f2ff; /* primary-container */
+    color: #00363a; /* on-primary */
+  }
 }
