@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: https://chaukienluong.github.io/Portfolio/
+      url: https://chaukienluong.github.io/
     
     steps:
     - name: Deploy to GitHub Pages
