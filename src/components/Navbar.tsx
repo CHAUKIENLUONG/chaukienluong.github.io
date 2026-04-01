@@ -133,9 +133,9 @@ const Navbar = () => {
       </header>
 
       {/* Full Width Bottom Navigation for Mobile */}
-      <nav className="fixed inset-x-0 bottom-0 z-50 w-full px-6 pb-6 md:hidden">
-        {/* Strictly no container background, item center align */}
-        <div className="mx-auto flex w-full max-w-sm items-center justify-between rounded-[32px] py-2">
+      <nav className="fixed inset-x-0 bottom-0 z-50 w-full px-4 pb-6 md:hidden">
+        {/* Glassmorphic container for mobile nav items */}
+        <div className="mx-auto flex w-full max-w-sm items-center justify-between rounded-[32px] bg-surface/80 backdrop-blur-md border border-white/10 px-6 py-2 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
           {navigationItems.map((item) => {
             const isActive = activeSection === item.href
 
