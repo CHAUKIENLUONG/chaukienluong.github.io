@@ -11,7 +11,7 @@ const Contact = () => {
   )
   const { t } = useTranslation()
 
-  const handleSubmit = async (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     dispatch(sendEmail(formData))
   }
