@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import avatarPortrait from '../assets/img/avatar.png';
+// import avatarPortrait from '../assets/img/avatar.png';
 import cvFile from '../assets/CV_CHAU-KIEN-LUONG_Frontend-Developer.pdf';
 
 const Hero = () => {
@@ -61,11 +61,11 @@ const Hero = () => {
               <div className="pointer-events-none absolute bottom-[12%] left-[8%] h-16 w-16 rounded-full border border-outline-variant/30" />
               <div className="pointer-events-none absolute bottom-[6%] left-1/2 h-10 w-[62%] -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
               <div className="pointer-events-none absolute inset-x-[4%] bottom-[2%] top-[12%] rounded-[2.5rem] border border-outline-variant/15 bg-gradient-to-b from-white/[0.03] via-transparent to-transparent" />
-              <img
+              {/* <img
                 alt="Chau Kien Luong portrait"
                 className="relative z-10 h-auto w-full max-w-[30rem] object-contain drop-shadow-[0_28px_70px_rgba(0,0,0,0.55)] transition-transform duration-700 md:max-w-[34rem] lg:max-w-[38rem] lg:translate-x-4 lg:scale-110"
                 src={avatarPortrait}
-              />
+              /> */}
             </div>
           </motion.div>
         </div>
