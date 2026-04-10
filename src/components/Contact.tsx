@@ -3,6 +3,7 @@ import type { RootState } from '../store/store'
 import type { AppDispatch } from '../store/store'
 import { updateFormData, sendEmail } from '../store/slices/contactReducer'
 import { useTranslation } from 'react-i18next'
+import { motion } from 'framer-motion'
 
 const Contact = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -33,8 +34,11 @@ const Contact = () => {
     <section className="relative overflow-hidden px-4 py-20 pb-40 sm:px-6 md:px-20 md:py-32 md:pb-32 lg:px-32" id="contact">
       <div className="pointer-events-none absolute top-0 right-0 h-full w-[85%] bg-gradient-to-l from-primary/5 to-transparent blur-3xl md:w-[50%]"></div>
       <div className="asymmetric-grid w-full gap-12 lg:gap-16">
-        <div 
-            data-aos="fade-right"
+        <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="lg:col-span-5"
         >
           <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2 block">04 / CONNECT</span>
@@ -56,10 +60,12 @@ const Contact = () => {
             <a className="rounded-full border border-outline-variant/10 bg-surface-container-low/50 px-4 py-3.5 text-center text-[10px] font-bold uppercase tracking-widest text-on-surface-variant transition-colors hover:text-primary md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-0" href="https://github.com/ckluong21" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a className="rounded-full border border-outline-variant/10 bg-surface-container-low/50 px-4 py-3.5 text-center text-[10px] font-bold uppercase tracking-widest text-on-surface-variant transition-colors hover:text-primary md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-0" href="https://linkedin.com/in/ckluong" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           </div>
-        </div>
-        <div 
-            data-aos="fade-left"
-            data-aos-delay="200"
+        </motion.div>
+        <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="relative z-10 rounded-[1.5rem] border border-outline-variant/10 bg-surface-container-low p-6 sm:p-8 md:rounded-2xl md:p-12 lg:col-span-7"
         >
           <form className="space-y-8 sm:space-y-10" onSubmit={handleSubmit}>
@@ -131,7 +137,7 @@ const Contact = () => {
                 {isSubmitting ? t('contact.form.sending') : t('contact.form.submit') || 'Transmit Message'}
             </button>
           </form>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
