@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../store/store'
+import { motion } from 'framer-motion'
 
 type SkillIconKey =
   | 'html'
@@ -122,19 +123,24 @@ const Experience = () => {
     <>
       <section className="bg-surface-container-lowest px-6 py-32 md:px-20 lg:px-32" id="experience">
         <div className="asymmetric-grid w-full">
-          <div
-            data-aos="fade-right"
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="col-span-12 mb-12 lg:col-span-4 lg:mb-0"
           >
             <span className="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-primary">02 / JOURNEY</span>
             <h2 className="text-4xl font-bold text-tertiary">{t('experience.title') || 'Experience'}</h2>
-          </div>
+          </motion.div>
           <div className="col-span-12 space-y-12 lg:col-start-6 lg:col-span-7">
             {experiences.map((exp, index) => (
-              <div
+              <motion.div
                 key={exp.companyKey}
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
                 className="relative pl-8 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-primary before:to-transparent"
               >
                 <div className="absolute left-[-4px] top-0 h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_rgba(0,242,255,0.6)]"></div>
@@ -157,26 +163,31 @@ const Experience = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       <section className="px-6 py-32 md:px-20 lg:px-32" id="skills">
-        <div
-          data-aos="fade-up"
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="mb-20"
         >
           <span className="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-primary">03 / ARSENAL</span>
           <h2 className="text-4xl font-bold text-tertiary">{t('skills.title') || 'Technical Stack'}</h2>
-        </div>
+        </motion.div>
         <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
           {skills.map((skill, index) => (
-            <div
+            <motion.div
               key={skill.name}
-              data-aos="zoom-in"
-              data-aos-delay={index * 100}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               className="ghost-border flex flex-col items-center gap-4 rounded-lg p-6 transition-all duration-300 group hover:bg-surface-container-high/30"
             >
               <div className="text-tertiary transition-colors group-hover:text-primary">
@@ -186,7 +197,7 @@ const Experience = () => {
                 <span className="h-1 w-1 rounded-full bg-primary opacity-0 transition-opacity group-hover:opacity-100"></span>
                 {skill.name}
               </span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>

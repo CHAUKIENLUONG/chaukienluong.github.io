@@ -1,8 +1,6 @@
 import { Suspense, lazy, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import './assets/css/style.css'
-import 'aos/dist/aos.css'
-import AOSInit from './utils/AOSInit'
 
 // Lazy load components
 const Hero = lazy(() => import('./components/Hero'))
@@ -26,7 +24,6 @@ function App() {
 
   return (
     <div className="min-h-screen bg-surface text-on-surface font-body selection-custom">
-      <AOSInit />
       <Navbar />
       
       {/* Floating Navigation Rail (Desktop Enhancement) */}

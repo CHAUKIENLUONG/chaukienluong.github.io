@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 import avatarPortrait from '../assets/img/avatar.png';
 import cvFile from '../assets/CV_CHAU-KIEN-LUONG_Frontend-Developer.pdf';
 
@@ -10,8 +11,11 @@ const Hero = () => {
       <div className="pointer-events-none absolute inset-x-0 top-16 h-[32rem] bg-[radial-gradient(circle_at_72%_35%,rgba(0,242,255,0.2),transparent_24%),radial-gradient(circle_at_78%_55%,rgba(255,255,255,0.08),transparent_20%),radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.02),transparent_60%)]" />
       <div className="relative flex min-h-[calc(100vh-6rem)] items-center">
         <div className="asymmetric-grid w-full items-center gap-y-14 lg:gap-0">
-          <div
-            data-aos="fade-right"
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="order-2 col-span-12 flex flex-col justify-center lg:order-1 lg:col-span-6"
           >
             <span className="mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-primary">
@@ -41,10 +45,13 @@ const Hero = () => {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div
-            data-aos="fade-left"
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="relative order-1 col-span-12 flex items-center justify-center lg:order-2 lg:col-span-6 lg:justify-end"
           >
             <div className="relative isolate flex w-full max-w-[38rem] items-end justify-center lg:justify-end">
@@ -60,7 +67,7 @@ const Hero = () => {
                 src={avatarPortrait}
               />
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
