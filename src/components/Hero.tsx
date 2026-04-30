@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import avatarPortrait from '../assets/img/avatar.png';
-import cvFile from '../assets/CV_CHAU-KIEN-LUONG_Frontend-Developer.pdf';
+import cvFile from '../assets/CV_CHAU-KIEN-LUONG_FullStack-Developer.pdf';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -43,7 +43,7 @@ const Hero = () => {
                 <div className="flex flex-wrap gap-4">
                   <a
                     href={cvFile}
-                    download="CV_CHAU-KIEN-LUONG_Frontend-Developer.pdf"
+                    download="CV_CHAU-KIEN-LUONG_FullStack-Developer.pdf"
                     className="metallic-gradient rounded-xl px-8 py-4 text-sm font-bold uppercase tracking-wider text-on-primary shadow-[0_10px_30px_rgba(0,242,255,0.2)] transition-transform hover:scale-105"
                   >
                     {t('hero.viewProjects') || 'Download CV'}
