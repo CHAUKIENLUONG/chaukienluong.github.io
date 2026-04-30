@@ -98,8 +98,8 @@ const Navbar = () => {
                     href={item.href}
                     onClick={() => handleNavClick(item.href)}
                     className={`group relative text-sm font-semibold uppercase tracking-wider transition-all ${isActive
-                        ? 'text-primary'
-                        : 'text-on-surface-variant/80 hover:text-primary'
+                      ? 'text-primary'
+                      : 'text-on-surface-variant/80 hover:text-primary'
                       }`}
                   >
                     {item.label}
@@ -145,8 +145,8 @@ const Navbar = () => {
                 href={item.href}
                 onClick={() => handleNavClick(item.href)}
                 className={`group relative flex flex-col items-center justify-center gap-1.5 transition-all active:scale-90 ${isActive
-                    ? 'text-primary drop-shadow-[0_0_12px_rgba(0,242,255,0.5)]'
-                    : 'text-on-surface-variant/30 hover:text-primary'
+                  ? 'text-primary drop-shadow-[0_0_12px_rgba(0,242,255,0.5)]'
+                  : 'text-on-surface-variant/30 hover:text-primary'
                   }`}
                 aria-label={item.label}
               >
