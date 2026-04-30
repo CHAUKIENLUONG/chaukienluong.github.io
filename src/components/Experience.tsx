@@ -1,9 +1,14 @@
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import type { RootState } from '../store/store'
-import { motion } from 'framer-motion'
 import { FaHtml5, FaCss3Alt, FaReact, FaNodeJs } from 'react-icons/fa'
 import { SiJavascript, SiTypescript, SiTailwindcss, SiPostgresql, SiAntdesign } from 'react-icons/si'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
+
+gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 type SkillIconKey =
   | 'html'
@@ -24,6 +29,44 @@ type Skill = {
 const Experience = () => {
   const { t } = useTranslation()
   const experiences = useSelector((state: RootState) => state.experience.experiences)
+  const container = useRef<HTMLDivElement>(null)
+
+  useGSAP(() => {
+    // Section Titles
+    gsap.utils.toArray<HTMLElement>('section h2').forEach((title) => {
+      if (title.parentElement) {
+        gsap.fromTo(title.parentElement, 
+          { opacity: 0, y: 50 }, 
+          { 
+            opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+            scrollTrigger: {
+              trigger: title.parentElement,
+              start: 'top 85%',
+              toggleActions: 'play none none none'
+            }
+          }
+        )
+      }
+    })
+
+    // Experience Items
+    gsap.fromTo(gsap.utils.toArray('.relative.pl-8'),
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out',
+        scrollTrigger: { trigger: '.col-span-12.space-y-12', start: 'top 80%' }
+      }
+    )
+
+    // Skills
+    gsap.fromTo(gsap.utils.toArray('.ghost-border'),
+      { opacity: 0, scale: 0.8 },
+      {
+        opacity: 1, scale: 1, duration: 0.6, stagger: 0.05, ease: 'back.out(1.7)',
+        scrollTrigger: { trigger: '#skills .grid', start: 'top 85%' }
+      }
+    )
+  }, { scope: container })
 
   const skills: Skill[] = [
     { name: 'HTML', icon: 'html' },
@@ -65,27 +108,19 @@ const Experience = () => {
   }
 
   return (
-    <>
+    <div ref={container}>
       <section className="bg-surface-container-lowest px-6 py-32 md:px-20 lg:px-32" id="experience">
         <div className="asymmetric-grid w-full">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+          <div
             className="col-span-12 mb-12 lg:col-span-4 lg:mb-0"
           >
             <span className="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-primary">02 / JOURNEY</span>
             <h2 className="text-4xl font-bold text-tertiary">{t('experience.title') || 'Experience'}</h2>
-          </motion.div>
+          </div>
           <div className="col-span-12 space-y-12 lg:col-start-6 lg:col-span-7">
-            {experiences.map((exp, index) => (
-              <motion.div
+            {experiences.map((exp) => (
+              <div
                 key={exp.companyKey}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
                 className="relative pl-8 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-primary before:to-transparent"
               >
                 <div className="absolute left-[-4px] top-0 h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_rgba(0,242,255,0.6)]"></div>
@@ -108,31 +143,23 @@ const Experience = () => {
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       <section className="px-6 py-32 md:px-20 lg:px-32" id="skills">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+        <div
           className="mb-20"
         >
           <span className="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-primary">03 / ARSENAL</span>
           <h2 className="text-4xl font-bold text-tertiary">{t('skills.title') || 'Technical Stack'}</h2>
-        </motion.div>
+        </div>
         <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
-          {skills.map((skill, index) => (
-            <motion.div
+          {skills.map((skill) => (
+            <div
               key={skill.name}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.1 }}
-              transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               className="ghost-border flex flex-col items-center gap-4 rounded-lg p-6 transition-all duration-300 group hover:bg-surface-container-high/30"
             >
               <div className="text-tertiary transition-colors group-hover:text-primary">
@@ -142,11 +169,11 @@ const Experience = () => {
                 <span className="h-1 w-1 rounded-full bg-primary opacity-0 transition-opacity group-hover:opacity-100"></span>
                 {skill.name}
               </span>
-            </motion.div>
+            </div>
           ))}
         </div>
       </section>
-    </>
+    </div>
   )
 }
 
