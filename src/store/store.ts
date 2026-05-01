@@ -2,7 +2,6 @@ import { configureStore } from '@reduxjs/toolkit'
 import contactReducer from './slices/contactReducer'
 import experienceReducer from './slices/experienceReducer'
 import languageReducer from './slices/languageSlice'
-import navbarReducer from './slices/navbarReducer'
 import projectsReducer from './slices/projectsReducer'
 
 export const store = configureStore({
@@ -10,7 +9,6 @@ export const store = configureStore({
     contact: contactReducer,
     experience: experienceReducer,
     projects: projectsReducer,
-    navbar: navbarReducer,
     language: languageReducer,
   },
 })

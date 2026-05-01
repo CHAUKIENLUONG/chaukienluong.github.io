@@ -9,7 +9,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useResponsiveQuery } from '../hooks/mediaQuery'
 
-gsap.registerPlugin(ScrollTrigger, useGSAP)
+gsap.registerPlugin(ScrollTrigger, useGSAP) // already registered globally, but needed for tree-shaking
 
 type SkillIconKey =
   | 'html'
@@ -34,24 +34,6 @@ const Experience = () => {
   const { isMobile, isTablet, isLaptop } = useResponsiveQuery()
 
   useGSAP(() => {
-    // Section Titles
-    gsap.utils.toArray<HTMLElement>('section h2').forEach((title) => {
-      if (title.parentElement) {
-        gsap.fromTo(title.parentElement,
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-            scrollTrigger: {
-              trigger: title.parentElement,
-              start: 'top 85%',
-              toggleActions: 'play none none none'
-            }
-          }
-        )
-      }
-    })
-
-    // Experience Items
     gsap.fromTo(gsap.utils.toArray('.experience-card'),
       { opacity: 0, y: 50 },
       {
