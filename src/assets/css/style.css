@@ -7,12 +7,11 @@
   html,
   body {
     overflow-x: hidden;
-    background-color: #131314;
-    /* surface-dim */
+    background-color: #050814;
   }
 
   body {
-    min-height: max(884px, 100dvh);
+    min-height: 100dvh;
   }
 }
 
@@ -26,7 +25,7 @@
   }
 
   .metallic-gradient {
-    background: linear-gradient(135deg, #e1fdff 0%, #00f2ff 100%);
+    background: linear-gradient(135deg, #fff4d0 0%, #d7b66a 45%, #8f6b2e 100%);
   }
 
   .asymmetric-grid {
@@ -41,17 +40,15 @@
   }
 
   .ghost-border {
-    border: 1px solid rgba(58, 73, 75, 0.15);
-    /* outline-variant 15% */
+    border: 1px solid rgba(215, 182, 106, 0.16);
   }
 
   .ghost-border:hover {
-    border-color: rgba(0, 242, 255, 0.4);
-    /* primary 40% */
+    border-color: rgba(215, 182, 106, 0.46);
   }
 
   .text-glow-primary {
-    text-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+    text-shadow: 0 0 22px rgba(215, 182, 106, 0.32);
   }
 
   .no-horizontal-scroll {
@@ -59,9 +56,7 @@
   }
 
   .selection-custom::selection {
-    background-color: #00f2ff;
-    /* primary-container */
-    color: #00363a;
-    /* on-primary */
+    background-color: #d7b66a;
+    color: #141006;
   }
 }
