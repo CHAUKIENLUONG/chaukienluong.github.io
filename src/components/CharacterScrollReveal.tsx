@@ -2,9 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
 import { useResponsiveQuery } from '../hooks/mediaQuery'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const FRAME_COUNT = 140
 const BACKGROUND_COLOR = '#050505'
@@ -290,7 +289,7 @@ const CharacterScrollReveal = ({
     }
   }, [renderProgress])
 
-  useEffect(() => {
+  useGSAP(() => {
     const wrapper = wrapperRef.current
     const stage = stickyRef.current
 
@@ -300,7 +299,7 @@ const CharacterScrollReveal = ({
 
     const playhead = { progress: progressRef.current }
 
-    const tween = gsap.to(playhead, {
+    gsap.to(playhead, {
       progress: 1,
       ease: 'none',
       onUpdate: () => {
@@ -342,11 +341,9 @@ const CharacterScrollReveal = ({
     renderProgress(progressRef.current)
 
     return () => {
-      tween.scrollTrigger?.kill()
-      tween.kill()
       window.removeEventListener('resize', handleResize)
     }
-  }, [isMobile, isTablet, renderProgress])
+  }, { scope: wrapperRef, dependencies: [isMobile, isTablet, renderProgress] })
 
   const stageClassName = `relative w-full overflow-hidden bg-[#050505] ${isMobile
     ? 'h-[100svh] min-h-[34rem]'

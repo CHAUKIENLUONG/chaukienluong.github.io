@@ -5,11 +5,9 @@ import type { RootState } from '../store/store'
 import { FaHtml5, FaCss3Alt, FaReact, FaNodeJs } from 'react-icons/fa'
 import { SiJavascript, SiTypescript, SiTailwindcss, SiPostgresql, SiAntdesign } from 'react-icons/si'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useResponsiveQuery } from '../hooks/mediaQuery'
 
-gsap.registerPlugin(ScrollTrigger, useGSAP) // already registered globally, but needed for tree-shaking
 
 type SkillIconKey =
   | 'html'

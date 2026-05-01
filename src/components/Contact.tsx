@@ -5,11 +5,9 @@ import type { AppDispatch } from '../store/store'
 import { updateFormData, sendEmail } from '../store/slices/contactReducer'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useResponsiveQuery } from '../hooks/mediaQuery'
 
-gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 const Contact = () => {
   const dispatch = useDispatch<AppDispatch>()
