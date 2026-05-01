@@ -5,7 +5,8 @@
         "projects": "Dự án",
         "contact": "Liên hệ",
         "darkMode": "Chế độ tối",
-        "lightMode": "Chế độ sáng"
+        "lightMode": "Chế độ sáng",
+        "cv": "Tải CV"
     },
     "hero": {
         "designEngineering": "Frontend Developer",

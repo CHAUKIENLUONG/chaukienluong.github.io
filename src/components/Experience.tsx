@@ -7,6 +7,7 @@ import { SiJavascript, SiTypescript, SiTailwindcss, SiPostgresql, SiAntdesign } 
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
+import { useResponsiveQuery } from '../hooks/mediaQuery'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
@@ -30,14 +31,15 @@ const Experience = () => {
   const { t } = useTranslation()
   const experiences = useSelector((state: RootState) => state.experience.experiences)
   const container = useRef<HTMLDivElement>(null)
+  const { isMobile, isTablet, isLaptop } = useResponsiveQuery()
 
   useGSAP(() => {
     // Section Titles
     gsap.utils.toArray<HTMLElement>('section h2').forEach((title) => {
       if (title.parentElement) {
-        gsap.fromTo(title.parentElement, 
-          { opacity: 0, y: 50 }, 
-          { 
+        gsap.fromTo(title.parentElement,
+          { opacity: 0, y: 50 },
+          {
             opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
             scrollTrigger: {
               trigger: title.parentElement,
@@ -50,16 +52,16 @@ const Experience = () => {
     })
 
     // Experience Items
-    gsap.fromTo(gsap.utils.toArray('.relative.pl-8'),
+    gsap.fromTo(gsap.utils.toArray('.experience-card'),
       { opacity: 0, y: 50 },
       {
         opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out',
-        scrollTrigger: { trigger: '.col-span-12.space-y-12', start: 'top 80%' }
+        scrollTrigger: { trigger: '.experience-list', start: 'top 80%' }
       }
     )
 
     // Skills
-    gsap.fromTo(gsap.utils.toArray('.ghost-border'),
+    gsap.fromTo(gsap.utils.toArray('.skill-card'),
       { opacity: 0, scale: 0.8 },
       {
         opacity: 1, scale: 1, duration: 0.6, stagger: 0.05, ease: 'back.out(1.7)',
@@ -81,7 +83,7 @@ const Experience = () => {
   ]
 
   const renderSkillIcon = (icon: SkillIconKey) => {
-    const iconClassName = 'h-10 w-10 transition-transform duration-300 group-hover:scale-110'
+    const iconClassName = `${isMobile ? 'h-8 w-8' : 'h-10 w-10'} transition-transform duration-300 group-hover:scale-110`
 
     switch (icon) {
       case 'html':
@@ -107,25 +109,47 @@ const Experience = () => {
     }
   }
 
+  const sectionClassName = `luxury-section ${isMobile
+    ? 'px-4 py-20'
+    : isTablet
+      ? 'px-6 py-24'
+      : isLaptop
+        ? 'px-12 py-28'
+        : 'px-32 py-32'
+    }`
+  const titleClassName = `font-bold text-tertiary text-glow-primary ${isMobile ? 'text-[2.25rem]' : 'text-5xl'}`
+  const experienceListClassName = `experience-list col-span-12 ${isMobile ? 'space-y-6' : 'space-y-10'} lg:col-start-6 lg:col-span-7`
+  const experienceCardClassName = `experience-card luxury-glass group relative rounded-2xl transition-all duration-500 before:absolute before:bg-gradient-to-b before:from-primary before:via-primary/25 before:to-transparent hover:border-primary/35 hover:shadow-[0_0_38px_rgba(215,182,106,0.1)] ${isMobile
+    ? 'p-5 pl-8 before:left-4 before:bottom-5 before:top-5 before:w-px'
+    : 'p-7 pl-10 before:left-5 before:bottom-7 before:top-7 before:w-px'
+    }`
+  const skillsGridClassName = `relative grid gap-4 ${isMobile
+    ? 'grid-cols-2'
+    : isTablet
+      ? 'grid-cols-3 gap-5'
+      : 'grid-cols-4 gap-6'
+    }`
+  const skillCardClassName = `skill-card luxury-glass group flex flex-col items-center rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/35 hover:shadow-[0_0_34px_rgba(215,182,106,0.1)] ${isMobile ? 'gap-3 p-4' : 'gap-4 p-6'}`
+
   return (
     <div ref={container}>
-      <section className="bg-surface-container-lowest px-6 py-32 md:px-20 lg:px-32" id="experience">
-        <div className="asymmetric-grid w-full">
+      <section className={sectionClassName} id="experience">
+        <div className="relative asymmetric-grid w-full max-w-[110rem] mx-auto">
           <div
             className="col-span-12 mb-12 lg:col-span-4 lg:mb-0"
           >
-            <span className="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-primary">02 / JOURNEY</span>
-            <h2 className="text-4xl font-bold text-tertiary">{t('experience.title') || 'Experience'}</h2>
+            <span className="luxury-kicker mb-3 block">02 / JOURNEY</span>
+            <h2 className={titleClassName}>{t('experience.title') || 'Experience'}</h2>
           </div>
-          <div className="col-span-12 space-y-12 lg:col-start-6 lg:col-span-7">
+          <div className={experienceListClassName}>
             {experiences.map((exp) => (
               <div
                 key={exp.companyKey}
-                className="relative pl-8 before:absolute before:left-0 before:top-0 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-primary before:to-transparent"
+                className={experienceCardClassName}
               >
-                <div className="absolute left-[-4px] top-0 h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_rgba(0,242,255,0.6)]"></div>
+                <div className={`absolute h-2 w-2 rounded-full bg-primary shadow-[0_0_14px_rgba(215,182,106,0.75)] ${isMobile ? 'left-[13px] top-5' : 'left-[17px] top-7'}`}></div>
                 <div className="mb-2 flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
-                  <span className="-mt-2 block text-xl font-bold uppercase tracking-tighter text-primary">
+                  <span className={`-mt-2 block font-bold uppercase tracking-tighter text-primary ${isMobile ? 'text-lg' : 'text-xl'}`}>
                     {t(exp.companyKey)}
                   </span>
                   <span className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/70">
@@ -138,7 +162,7 @@ const Experience = () => {
                 <ul className="max-w-2xl space-y-2 leading-relaxed text-on-surface-variant">
                   {exp.bulletKeys.map((bulletKey) => (
                     <li key={bulletKey} className="flex gap-3">
-                      <span className="mt-[0.6rem] h-1 w-1 shrink-0 rounded-full bg-primary"></span>
+                      <span className="mt-[0.6rem] h-1 w-1 shrink-0 rounded-full bg-primary shadow-[0_0_8px_rgba(215,182,106,0.62)]"></span>
                       <span>{t(bulletKey)}</span>
                     </li>
                   ))}
@@ -149,28 +173,30 @@ const Experience = () => {
         </div>
       </section>
 
-      <section className="px-6 py-32 md:px-20 lg:px-32" id="skills">
-        <div
-          className="mb-20"
-        >
-          <span className="mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-primary">03 / ARSENAL</span>
-          <h2 className="text-4xl font-bold text-tertiary">{t('skills.title') || 'Technical Stack'}</h2>
-        </div>
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
-          {skills.map((skill) => (
-            <div
-              key={skill.name}
-              className="ghost-border flex flex-col items-center gap-4 rounded-lg p-6 transition-all duration-300 group hover:bg-surface-container-high/30"
-            >
-              <div className="text-tertiary transition-colors group-hover:text-primary">
-                {renderSkillIcon(skill.icon)}
+      <section className={sectionClassName} id="skills">
+        <div className="max-w-[110rem] mx-auto">
+          <div
+            className={isMobile ? 'mb-10' : 'mb-20'}
+          >
+            <span className="luxury-kicker mb-3 block">03 / ARSENAL</span>
+            <h2 className={titleClassName}>{t('skills.title') || 'Technical Stack'}</h2>
+          </div>
+          <div className={skillsGridClassName}>
+            {skills.map((skill) => (
+              <div
+                key={skill.name}
+                className={skillCardClassName}
+              >
+                <div className="text-tertiary transition-colors group-hover:text-primary">
+                  {renderSkillIcon(skill.icon)}
+                </div>
+                <span className="label-md flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.05em] text-on-surface-variant group-hover:text-primary">
+                  <span className="h-1 w-1 rounded-full bg-primary opacity-0 transition-opacity group-hover:opacity-100"></span>
+                  {skill.name}
+                </span>
               </div>
-              <span className="label-md flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.05em] text-on-surface-variant group-hover:text-primary">
-                <span className="h-1 w-1 rounded-full bg-primary opacity-0 transition-opacity group-hover:opacity-100"></span>
-                {skill.name}
-              </span>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
     </div>

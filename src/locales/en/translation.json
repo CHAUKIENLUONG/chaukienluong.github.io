@@ -5,7 +5,8 @@
         "projects": "Projects",
         "contact": "Contact",
         "darkMode": "Dark Mode",
-        "lightMode": "Light Mode"
+        "lightMode": "Light Mode",
+        "cv": "Download CV"
     },
     "hero": {
         "designEngineering": "Frontend Developer",
