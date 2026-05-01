@@ -1,12 +1,9 @@
-import { Suspense, lazy, useEffect } from 'react'
+import { Suspense, lazy, useEffect, useRef } from 'react'
 import Navbar from './components/Navbar'
 import './assets/css/style.css'
-import { useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-
-gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 const Hero = lazy(() => import('./components/Hero'))
 const Experience = lazy(() => import('./components/Experience'))
@@ -24,26 +21,6 @@ function App() {
   const container = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
-    gsap.utils.toArray<HTMLElement>('section h2').forEach((title) => {
-      if (title.parentElement) {
-        gsap.fromTo(
-          title.parentElement,
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: title.parentElement,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          },
-        )
-      }
-    })
-
     gsap.fromTo(
       gsap.utils.toArray('#experience .experience-card'),
       { opacity: 0, y: 50 },

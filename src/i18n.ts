@@ -30,7 +30,6 @@ const initI18n = async () => {
                 useSuspense: false,
                 bindI18n: 'languageChanged loaded',
             },
-            debug: true // This will help us see what's happening with translations
         });
 };
 

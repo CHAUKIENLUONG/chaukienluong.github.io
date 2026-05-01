@@ -6,7 +6,12 @@ import './index.css'
 import App from './App.tsx'
 import { store } from './store/store'
 import i18n from './i18n'
+import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
+
+// Register GSAP plugins once globally
+gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 // Immediately disable scroll restoration and scroll to top
 if ('scrollRestoration' in window.history) {

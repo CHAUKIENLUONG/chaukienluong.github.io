@@ -21,22 +21,6 @@ const Contact = () => {
   const { isMobile, isTablet, isLaptop } = useResponsiveQuery()
 
   useGSAP(() => {
-    // Section Title
-    const title = container.current?.querySelector('h2');
-    if (title && title.parentElement) {
-      gsap.fromTo(title.parentElement,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-          scrollTrigger: {
-            trigger: title.parentElement,
-            start: 'top 85%',
-            toggleActions: 'play none none none'
-          }
-        }
-      )
-    }
-
     // Contact Content
     const contactLeft = container.current?.querySelector('.asymmetric-grid > div:nth-child(1)')
     const contactRight = container.current?.querySelector('.asymmetric-grid > div:nth-child(2)')

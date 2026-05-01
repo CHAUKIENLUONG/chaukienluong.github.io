@@ -21,26 +21,46 @@ const Navbar = () => {
   const { isMobile, isTablet } = useResponsiveQuery()
   const isCompactHeader = isMobile || isTablet
 
+  // Single merged scroll handler with rAF throttle — replaces two separate listeners
   useEffect(() => {
+    const sections = ['home', 'experience', 'projects', 'contact']
+    let rafId = 0
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY
 
-      // Always show at the top
-      if (currentScrollY < 10) {
-        setIsVisible(true)
-      } else if (currentScrollY > lastScrollY.current) {
-        // Scrolling down
-        if (isVisible) setIsVisible(false)
-      } else {
-        // Scrolling up
-        if (!isVisible) setIsVisible(true)
-      }
+        // Navbar show/hide
+        if (currentScrollY < 10) {
+          setIsVisible(true)
+        } else if (currentScrollY > lastScrollY.current) {
+          setIsVisible(false)
+        } else {
+          setIsVisible(true)
+        }
+        lastScrollY.current = currentScrollY
 
-      lastScrollY.current = currentScrollY
+        // Active section detection
+        let current = 'home'
+        for (let index = sections.length - 1; index >= 0; index -= 1) {
+          const section = document.getElementById(sections[index])
+          if (section && section.getBoundingClientRect().top <= 160) {
+            current = sections[index]
+            break
+          }
+        }
+        setActiveSection(`#${current}`)
+      })
     }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [isVisible])
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      cancelAnimationFrame(rafId)
+    }
+  }, [])
 
   useEffect(() => {
     document.documentElement.classList.add('dark')
@@ -49,31 +69,6 @@ const Navbar = () => {
     dispatch(setLanguage(savedLanguage))
     void i18n.changeLanguage(savedLanguage)
   }, [dispatch, i18n])
-
-  useEffect(() => {
-    const syncSection = () => {
-      const sections = ['home', 'experience', 'projects', 'contact']
-
-      let current = 'home'
-
-      for (let index = sections.length - 1; index >= 0; index -= 1) {
-        const sectionId = sections[index]
-        const section = document.getElementById(sectionId)
-
-        if (section && section.getBoundingClientRect().top <= 160) {
-          current = sectionId
-          break
-        }
-      }
-
-      setActiveSection(`#${current}`)
-    }
-
-    syncSection()
-    window.addEventListener('scroll', syncSection)
-
-    return () => window.removeEventListener('scroll', syncSection)
-  }, [])
 
   const navigationItems: NavigationItem[] = [
     { href: '#home', label: t('nav.home') || 'Home', icon: 'home_app_logo' },
