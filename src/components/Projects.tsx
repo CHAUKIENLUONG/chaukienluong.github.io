@@ -7,7 +7,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useResponsiveQuery } from '../hooks/mediaQuery'
 
-gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 const Projects = () => {
   const projects = useSelector((state: RootState) => state.projects.projects)
