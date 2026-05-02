@@ -229,7 +229,7 @@ const CharacterScrollReveal = ({
       const image = new Image()
 
       image.decoding = 'async'
-      image.src = `/spritesheets/sprite-${sheetIndex}.webp`
+      image.src = `/spritesheets/sprite-${sheetIndex}.avif`
       image.onload = () => {
         if (cancelled) {
           return
