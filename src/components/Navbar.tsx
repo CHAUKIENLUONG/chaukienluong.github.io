@@ -5,17 +5,12 @@ import type { AppDispatch, RootState } from '../store/store'
 import { setLanguage } from '../store/slices/languageSlice'
 import { useResponsiveQuery } from '../hooks/mediaQuery'
 
-type NavigationItem = {
-  href: string
-  label: string
-  icon: string
-}
+
 
 const Navbar = () => {
   const dispatch = useDispatch<AppDispatch>()
   const currentLanguage = useSelector((state: RootState) => state.language.currentLanguage)
   const { i18n, t } = useTranslation()
-  const [activeSection, setActiveSection] = useState('#home')
   const [isVisible, setIsVisible] = useState(true)
   const lastScrollY = useRef(0)
   const { isMobile, isTablet } = useResponsiveQuery()
@@ -23,7 +18,6 @@ const Navbar = () => {
 
   // Single merged scroll handler with rAF throttle — replaces two separate listeners
   useEffect(() => {
-    const sections = ['home', 'experience', 'projects', 'contact']
     let rafId = 0
 
     const handleScroll = () => {
@@ -40,17 +34,6 @@ const Navbar = () => {
           setIsVisible(true)
         }
         lastScrollY.current = currentScrollY
-
-        // Active section detection
-        let current = 'home'
-        for (let index = sections.length - 1; index >= 0; index -= 1) {
-          const section = document.getElementById(sections[index])
-          if (section && section.getBoundingClientRect().top <= 160) {
-            current = sections[index]
-            break
-          }
-        }
-        setActiveSection(`#${current}`)
       })
     }
 
@@ -70,16 +53,7 @@ const Navbar = () => {
     void i18n.changeLanguage(savedLanguage)
   }, [dispatch, i18n])
 
-  const navigationItems: NavigationItem[] = [
-    { href: '#home', label: t('nav.home') || 'Home', icon: 'home_app_logo' },
-    { href: '#experience', label: t('nav.experience') || 'Experience', icon: 'person' },
-    { href: '#projects', label: t('nav.projects') || 'Work', icon: 'layers' },
-    { href: '#contact', label: t('nav.contact') || 'Contact', icon: 'mail' },
-  ]
 
-  const handleNavClick = (href: string) => {
-    setActiveSection(href)
-  }
 
   const toggleLanguage = () => {
     const newLanguage = currentLanguage === 'en' ? 'vi' : 'en'
@@ -139,41 +113,7 @@ const Navbar = () => {
         </div>
       </header>
 
-      {isMobile && (
-        <nav className="fixed inset-x-0 bottom-0 z-50 w-full px-3 pb-5">
-          <div className="luxury-glass mx-auto flex w-full max-w-sm items-center justify-between rounded-[28px] px-6 py-2">
-            {navigationItems.map((item) => {
-              const isActive = activeSection === item.href
 
-              return (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => handleNavClick(item.href)}
-                  className={`group relative flex flex-col items-center justify-center gap-1.5 transition-all active:scale-90 ${isActive
-                    ? 'text-primary drop-shadow-[0_0_12px_rgba(215,182,106,0.55)]'
-                    : 'text-on-surface-variant/30 hover:text-primary'
-                    }`}
-                  aria-label={item.label}
-                >
-                  <div className={`flex h-12 w-12 items-center justify-center rounded-2xl transition-all ${isActive ? 'bg-primary/10 shadow-[inset_0_0_18px_rgba(215,182,106,0.14)]' : ''}`}>
-                    <span className={`material-symbols-outlined text-[24px]`}>
-                      {item.icon}
-                    </span>
-                  </div>
-                  <span className={`text-[8px] font-black uppercase tracking-[0.16em] transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
-                    {item.label}
-                  </span>
-
-                  {isActive && (
-                    <div className="absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_12px_rgba(215,182,106,0.85)]" />
-                  )}
-                </a>
-              )
-            })}
-          </div>
-        </nav>
-      )}
     </>
   )
 }
