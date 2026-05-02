@@ -18,6 +18,8 @@ function App() {
     // Force scroll to top on mount with a small delay to override GSAP/Lazy loading behavior
     const timer = setTimeout(() => {
       window.scrollTo(0, 0)
+      ScrollTrigger.config({ ignoreMobileResize: true })
+      ScrollTrigger.normalizeScroll(true)
       ScrollTrigger.refresh()
     }, 100)
 
