@@ -190,7 +190,7 @@ const CharacterScrollReveal = ({
     const x = (width - drawWidth) / 2
     const y = (height - drawHeight) / 2
 
-    context.imageSmoothingEnabled = true
+    context.imageSmoothingEnabled = !isMobile
     context.imageSmoothingQuality = isMobile ? 'low' : 'high'
     context.drawImage(
       sheet,
