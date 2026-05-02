@@ -130,7 +130,7 @@ const CharacterScrollReveal = ({
   )
 
   const loadingProgress = Math.round((loadedSheets / SHEET_COUNT) * 100)
-  const isLoaded = loadedSheets >= SHEET_COUNT
+  const isLoaded = loadedSheets >= 1
 
   const drawFrame = useCallback((frameIndex: number) => {
     const canvas = canvasRef.current
@@ -191,7 +191,7 @@ const CharacterScrollReveal = ({
     const y = (height - drawHeight) / 2
 
     context.imageSmoothingEnabled = true
-    context.imageSmoothingQuality = 'high'
+    context.imageSmoothingQuality = isMobile ? 'low' : 'high'
     context.drawImage(
       sheet,
       sx, sy, SPRITE_FRAME_W, SPRITE_FRAME_H,
@@ -277,7 +277,7 @@ const CharacterScrollReveal = ({
         trigger: wrapper,
         start: 'top top',
         end: isMobile ? '+=240%' : isTablet ? '+=300%' : '+=400%',
-        scrub: true,
+        scrub: 0.5,
         pin: stage,
         pinSpacing: true,
         anticipatePin: 1,
