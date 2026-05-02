@@ -82,7 +82,7 @@ const getBeatStyle = (progress: number, beat: StoryBeat): CSSProperties => {
 
   if (progress >= beat.start && progress <= beat.end) {
     if (progress < beat.start + fadeDistance) {
-      opacity = mapRange(progress, beat.start, beat.start + fadeDistance, 0, 1)
+      opacity = beat.start === 0 ? 1 : mapRange(progress, beat.start, beat.start + fadeDistance, 0, 1)
     } else if (progress > beat.end - fadeDistance) {
       opacity = mapRange(progress, beat.end - fadeDistance, beat.end, 1, 0)
     } else {
@@ -91,7 +91,7 @@ const getBeatStyle = (progress: number, beat: StoryBeat): CSSProperties => {
   }
 
   const y = progress < beat.start + (beat.end - beat.start) / 2
-    ? mapRange(progress, beat.start, beat.start + fadeDistance, 20, 0)
+    ? (beat.start === 0 ? 0 : mapRange(progress, beat.start, beat.start + fadeDistance, 20, 0))
     : mapRange(progress, beat.end - fadeDistance, beat.end, 0, -20)
 
   return {
@@ -277,7 +277,7 @@ const CharacterScrollReveal = ({
         trigger: wrapper,
         start: 'top top',
         end: isMobile ? '+=240%' : isTablet ? '+=300%' : '+=400%',
-        scrub: 0.5,
+        scrub: 1,
         pin: stage,
         pinSpacing: true,
         anticipatePin: 1,
