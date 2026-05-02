@@ -5,7 +5,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useResponsiveQuery } from '../hooks/mediaQuery'
 
+// Spritesheet configuration (must match generate-spritesheets.mjs output)
 const FRAME_COUNT = 140
+const SHEET_COUNT = 10
+const FRAMES_PER_SHEET = 14
+const SPRITE_COLS = 2
+const SPRITE_FRAME_W = 1536
+const SPRITE_FRAME_H = 864
 const BACKGROUND_COLOR = '#050505'
 
 type CharacterScrollRevealProps = {
@@ -61,15 +67,6 @@ const mapRange = (
   return outputStart + (outputEnd - outputStart) * progress
 }
 
-const getFramePaths = (index: number) => {
-  const frameName = `ezgif-frame-${String(index + 1).padStart(3, '0')}`
-
-  return [
-    `/sequence/${frameName}.webp`,
-    `/sequence/${frameName}.jpg`,
-  ]
-}
-
 const getSequenceFrameIndex = (progress: number) => {
   const forwardIndex = Math.min(
     FRAME_COUNT - 1,
@@ -77,30 +74,6 @@ const getSequenceFrameIndex = (progress: number) => {
   )
 
   return FRAME_COUNT - 1 - forwardIndex
-}
-
-const getNearestFrame = (
-  images: (HTMLImageElement | undefined)[],
-  requestedFrame: number,
-) => {
-  if (images[requestedFrame]?.naturalWidth) {
-    return images[requestedFrame]
-  }
-
-  for (let offset = 1; offset < images.length; offset += 1) {
-    const previous = images[requestedFrame - offset]
-    const next = images[requestedFrame + offset]
-
-    if (previous?.naturalWidth) {
-      return previous
-    }
-
-    if (next?.naturalWidth) {
-      return next
-    }
-  }
-
-  return undefined
 }
 
 const getBeatStyle = (progress: number, beat: StoryBeat): CSSProperties => {
@@ -135,17 +108,17 @@ const CharacterScrollReveal = ({
   const wrapperRef = useRef<HTMLDivElement>(null)
   const stickyRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const imagesRef = useRef<(HTMLImageElement | undefined)[]>([])
+  const sheetsRef = useRef<(HTMLImageElement | undefined)[]>([])
   const progressRef = useRef(0)
   const renderedFrameRef = useRef(-1)
 
-  const [loadedFrames, setLoadedFrames] = useState(0)
+  const [loadedSheets, setLoadedSheets] = useState(0)
   const [progress, setProgress] = useState(0)
   const { isMobile, isTablet, isLaptop } = useResponsiveQuery()
   const shouldCoverFrame = isMobile || isTablet
 
   const particles = useMemo(
-    () => Array.from({ length: 34 }, (_, index) => ({
+    () => isMobile ? [] : Array.from({ length: 34 }, (_, index) => ({
       id: index,
       left: `${(index * 37) % 100}%`,
       top: `${(index * 53) % 100}%`,
@@ -153,11 +126,11 @@ const CharacterScrollReveal = ({
       duration: `${7 + (index % 6)}s`,
       opacity: 0.12 + (index % 4) * 0.04,
     })),
-    [],
+    [isMobile],
   )
 
-  const loadingProgress = Math.round((loadedFrames / FRAME_COUNT) * 100)
-  const isLoaded = loadedFrames >= FRAME_COUNT
+  const loadingProgress = Math.round((loadedSheets / SHEET_COUNT) * 100)
+  const isLoaded = loadedSheets >= SHEET_COUNT
 
   const drawFrame = useCallback((frameIndex: number) => {
     const canvas = canvasRef.current
@@ -173,9 +146,26 @@ const CharacterScrollReveal = ({
       return false
     }
 
+    // Determine which spritesheet and position within it
+    const sheetIndex = Math.floor(frameIndex / FRAMES_PER_SHEET)
+    const localIndex = frameIndex % FRAMES_PER_SHEET
+    const col = localIndex % SPRITE_COLS
+    const row = Math.floor(localIndex / SPRITE_COLS)
+
+    const sheet = sheetsRef.current[sheetIndex]
+
+    if (!sheet?.naturalWidth) {
+      return false
+    }
+
+    // Source rectangle on the spritesheet
+    const sx = col * SPRITE_FRAME_W
+    const sy = row * SPRITE_FRAME_H
+
+    // Canvas sizing
     const width = stage.clientWidth
     const height = stage.clientHeight
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2)
+    const pixelRatio = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2)
     const expectedWidth = Math.round(width * pixelRatio)
     const expectedHeight = Math.round(height * pixelRatio)
 
@@ -191,23 +181,22 @@ const CharacterScrollReveal = ({
     context.fillStyle = BACKGROUND_COLOR
     context.fillRect(0, 0, width, height)
 
-    const image = getNearestFrame(imagesRef.current, frameIndex)
-
-    if (!image) {
-      return false
-    }
-
+    // Scale frame to fit/cover the viewport
     const baseScale = shouldCoverFrame
-      ? Math.max(width / image.naturalWidth, height / image.naturalHeight)
-      : Math.min(width / image.naturalWidth, height / image.naturalHeight)
-    const drawWidth = image.naturalWidth * baseScale
-    const drawHeight = image.naturalHeight * baseScale
+      ? Math.max(width / SPRITE_FRAME_W, height / SPRITE_FRAME_H)
+      : Math.min(width / SPRITE_FRAME_W, height / SPRITE_FRAME_H)
+    const drawWidth = SPRITE_FRAME_W * baseScale
+    const drawHeight = SPRITE_FRAME_H * baseScale
     const x = (width - drawWidth) / 2
     const y = (height - drawHeight) / 2
 
     context.imageSmoothingEnabled = true
     context.imageSmoothingQuality = 'high'
-    context.drawImage(image, x, y, drawWidth, drawHeight)
+    context.drawImage(
+      sheet,
+      sx, sy, SPRITE_FRAME_W, SPRITE_FRAME_H,
+      x, y, drawWidth, drawHeight,
+    )
 
     return true
   }, [shouldCoverFrame])
@@ -230,58 +219,37 @@ const CharacterScrollReveal = ({
     ))
   }, [drawFrame])
 
+  // Load spritesheets (10 requests instead of 140)
   useEffect(() => {
     let cancelled = false
-    imagesRef.current = new Array(FRAME_COUNT)
-    setLoadedFrames(0)
+    sheetsRef.current = new Array(SHEET_COUNT)
+    setLoadedSheets(0)
 
-    Array.from({ length: FRAME_COUNT }, (_, index) => {
-      const sources = getFramePaths(index)
-      let attempt = 0
-      let settled = false
+    Array.from({ length: SHEET_COUNT }, (_, sheetIndex) => {
+      const image = new Image()
 
-      const loadNextSource = () => {
-        const image = new Image()
-
-        image.decoding = 'async'
-        image.src = sources[attempt]
-        image.onload = () => {
-          if (cancelled || settled) {
-            return
-          }
-
-          settled = true
-          imagesRef.current[index] = image
-          setLoadedFrames((current) => Math.min(current + 1, FRAME_COUNT))
-
-          if (
-            index === 0 ||
-            index === FRAME_COUNT - 1 ||
-            index === getSequenceFrameIndex(progressRef.current)
-          ) {
-            renderedFrameRef.current = -1
-            renderProgress(progressRef.current)
-          }
+      image.decoding = 'async'
+      image.src = `/spritesheets/sprite-${sheetIndex}.webp`
+      image.onload = () => {
+        if (cancelled) {
+          return
         }
-        image.onerror = () => {
-          if (cancelled || settled) {
-            return
-          }
 
-          attempt += 1
+        sheetsRef.current[sheetIndex] = image
+        setLoadedSheets((current) => Math.min(current + 1, SHEET_COUNT))
 
-          if (attempt < sources.length) {
-            loadNextSource()
-
-            return
-          }
-
-          settled = true
-          setLoadedFrames((current) => Math.min(current + 1, FRAME_COUNT))
-        }
+        // Re-draw current frame when a relevant sheet loads
+        renderedFrameRef.current = -1
+        renderProgress(progressRef.current)
       }
+      image.onerror = () => {
+        if (cancelled) {
+          return
+        }
 
-      loadNextSource()
+        // Count as loaded even on error to avoid infinite loading
+        setLoadedSheets((current) => Math.min(current + 1, SHEET_COUNT))
+      }
     })
 
     return () => {
@@ -399,7 +367,7 @@ const CharacterScrollReveal = ({
           {particles.map((particle) => (
             <span
               key={particle.id}
-              className="character-dust absolute h-px w-px rounded-full bg-white"
+              className="character-dust absolute h-px w-px rounded-full bg-white transform-gpu"
               style={{
                 left: particle.left,
                 top: particle.top,
@@ -418,9 +386,6 @@ const CharacterScrollReveal = ({
               className="absolute mx-auto flex w-full max-w-full flex-col items-center text-center"
               style={getBeatStyle(progress, beat)}
             >
-              <p className="mb-5 text-[0.65rem] font-semibold uppercase tracking-[0.52em] text-[#d7c48f]/70 sm:text-xs">
-                0{index + 1} / 04
-              </p>
               <h1 className={titleClassName}>
                 {index === 0 ? characterName : beat.title}
               </h1>

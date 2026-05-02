@@ -136,7 +136,8 @@ const Projects = () => {
                   <div className={mediaClassName}>
                     <img
                       alt={project.title}
-                      className="h-full w-full object-cover opacity-90 grayscale-[12%] transition-all duration-700 group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0"
+                      loading="lazy"
+                      className="h-full w-full object-cover opacity-90 grayscale-[12%] transform-gpu transition-all duration-700 group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0"
                       src={project.image}
                     />
                     <div className="gold-rule absolute left-0 top-0 h-px w-full opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
