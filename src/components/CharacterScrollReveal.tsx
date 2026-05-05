@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type { CSSProperties } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useResponsiveQuery } from '../hooks/mediaQuery'
 
@@ -51,20 +49,6 @@ const storyBeats: StoryBeat[] = [
   },
 ]
 
-const clamp = (value: number, min = 0, max = 1) => Math.min(Math.max(value, min), max)
-
-const mapRange = (
-  value: number,
-  inputStart: number,
-  inputEnd: number,
-  outputStart: number,
-  outputEnd: number,
-) => {
-  const progress = clamp((value - inputStart) / (inputEnd - inputStart))
-
-  return outputStart + (outputEnd - outputStart) * progress
-}
-
 const getSequenceFrameIndex = (progress: number) => {
   const forwardIndex = Math.min(
     FRAME_COUNT - 1,
@@ -72,31 +56,6 @@ const getSequenceFrameIndex = (progress: number) => {
   )
 
   return FRAME_COUNT - 1 - forwardIndex
-}
-
-const getBeatStyle = (progress: number, beat: StoryBeat): CSSProperties => {
-  const fadeDistance = 0.1
-  let opacity = 0
-
-  if (progress >= beat.start && progress <= beat.end) {
-    if (progress < beat.start + fadeDistance) {
-      opacity = beat.start === 0 ? 1 : mapRange(progress, beat.start, beat.start + fadeDistance, 0, 1)
-    } else if (progress > beat.end - fadeDistance) {
-      opacity = mapRange(progress, beat.end - fadeDistance, beat.end, 1, 0)
-    } else {
-      opacity = 1
-    }
-  }
-
-  const y = progress < beat.start + (beat.end - beat.start) / 2
-    ? (beat.start === 0 ? 0 : mapRange(progress, beat.start, beat.start + fadeDistance, 20, 0))
-    : mapRange(progress, beat.end - fadeDistance, beat.end, 0, -20)
-
-  return {
-    opacity,
-    transform: `translate3d(0, ${y}px, 0)`,
-    pointerEvents: opacity > 0.05 ? 'auto' : 'none',
-  }
 }
 
 const CharacterScrollReveal = ({
@@ -293,7 +252,7 @@ const CharacterScrollReveal = ({
       isDesktop: "(min-width: 1024px)"
     }, (context) => {
       const { isMobile, isTablet } = context.conditions as { isMobile: boolean, isTablet: boolean }
-      
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: wrapper,
@@ -334,12 +293,12 @@ const CharacterScrollReveal = ({
         const beatEl = wrapper.querySelector(`.story-beat-${index}`)
         if (beatEl) {
           const fadeDistance = 0.08
-          tl.fromTo(beatEl, 
+          tl.fromTo(beatEl,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: fadeDistance, ease: 'power2.out' },
             beat.start
           )
-          tl.to(beatEl, 
+          tl.to(beatEl,
             { opacity: 0, y: -20, duration: fadeDistance, ease: 'power2.in' },
             beat.end - fadeDistance
           )
