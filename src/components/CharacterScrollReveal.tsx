@@ -43,7 +43,7 @@ const storyBeats: StoryBeat[] = [
   },
   {
     start: 0.75,
-    end: 0.95,
+    end: 1.0,
     title: 'CODE WITH PURPOSE',
     subtitle: 'Scaling systems from the first byte to the final pixel.',
   },
@@ -283,6 +283,7 @@ const CharacterScrollReveal = ({
       tl.to(playhead, {
         progress: 1,
         ease: 'none',
+        duration: 1,
         onUpdate: () => {
           renderProgress(playhead.progress)
         },
@@ -293,15 +294,21 @@ const CharacterScrollReveal = ({
         const beatEl = wrapper.querySelector(`.story-beat-${index}`)
         if (beatEl) {
           const fadeDistance = 0.08
+          // Final beat doesn't fade out at the bottom, it stays until the end
+          const isLast = index === storyBeats.length - 1
+          
           tl.fromTo(beatEl,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: fadeDistance, ease: 'power2.out' },
             beat.start
           )
-          tl.to(beatEl,
-            { opacity: 0, y: -20, duration: fadeDistance, ease: 'power2.in' },
-            beat.end - fadeDistance
-          )
+          
+          if (!isLast) {
+            tl.to(beatEl,
+              { opacity: 0, y: -20, duration: fadeDistance, ease: 'power2.in' },
+              beat.end - fadeDistance
+            )
+          }
         }
       })
 
