@@ -10,8 +10,6 @@ const FRAME_COUNT = 140
 const SHEET_COUNT = 10
 const FRAMES_PER_SHEET = 14
 const SPRITE_COLS = 2
-const SPRITE_FRAME_W = 1536
-const SPRITE_FRAME_H = 864
 const BACKGROUND_COLOR = '#050505'
 
 type CharacterScrollRevealProps = {
@@ -113,9 +111,27 @@ const CharacterScrollReveal = ({
   const renderedFrameRef = useRef(-1)
 
   const [loadedSheets, setLoadedSheets] = useState(0)
-  const [progress, setProgress] = useState(0)
   const { isMobile, isTablet, isLaptop } = useResponsiveQuery()
   const shouldCoverFrame = isMobile || isTablet
+
+  // Store in refs so drawFrame can read current values without being recreated
+  const isMobileRef = useRef(isMobile)
+  const isTabletRef = useRef(isTablet)
+  const shouldCoverFrameRef = useRef(shouldCoverFrame)
+  useEffect(() => {
+    isMobileRef.current = isMobile
+    isTabletRef.current = isTablet
+    shouldCoverFrameRef.current = shouldCoverFrame
+  }, [isMobile, isTablet, shouldCoverFrame])
+
+  // Lock the spritesheet prefix to initial device type — avoids destructive
+  // reload when the user resizes across breakpoints.  drawFrame already
+  // reads actual dimensions from sheet.naturalWidth/Height so the same
+  // sheet set renders correctly at any viewport width.
+  const prefixRef = useRef(
+    window.matchMedia('(max-width: 639px)').matches ? 'mobile' : 'desktop'
+  )
+  const prefix = prefixRef.current
 
   const particles = useMemo(
     () => isMobile ? [] : Array.from({ length: 34 }, (_, index) => ({
@@ -158,14 +174,17 @@ const CharacterScrollReveal = ({
       return false
     }
 
+    const actualFrameWidth = sheet.naturalWidth / SPRITE_COLS
+    const actualFrameHeight = sheet.naturalHeight / Math.ceil(FRAMES_PER_SHEET / SPRITE_COLS)
+
     // Source rectangle on the spritesheet
-    const sx = col * SPRITE_FRAME_W
-    const sy = row * SPRITE_FRAME_H
+    const sx = col * actualFrameWidth
+    const sy = row * actualFrameHeight
 
     // Canvas sizing
     const width = stage.clientWidth
     const height = stage.clientHeight
-    const pixelRatio = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2)
+    const pixelRatio = isMobileRef.current ? 1 : Math.min(window.devicePixelRatio || 1, 2)
     const expectedWidth = Math.round(width * pixelRatio)
     const expectedHeight = Math.round(height * pixelRatio)
 
@@ -182,24 +201,25 @@ const CharacterScrollReveal = ({
     context.fillRect(0, 0, width, height)
 
     // Scale frame to fit/cover the viewport
-    const baseScale = shouldCoverFrame
-      ? Math.max(width / SPRITE_FRAME_W, height / SPRITE_FRAME_H)
-      : Math.min(width / SPRITE_FRAME_W, height / SPRITE_FRAME_H)
-    const drawWidth = SPRITE_FRAME_W * baseScale
-    const drawHeight = SPRITE_FRAME_H * baseScale
+    const baseScale = shouldCoverFrameRef.current
+      ? Math.max(width / actualFrameWidth, height / actualFrameHeight)
+      : Math.min(width / actualFrameWidth, height / actualFrameHeight)
+    const drawWidth = actualFrameWidth * baseScale
+    const drawHeight = actualFrameHeight * baseScale
     const x = (width - drawWidth) / 2
     const y = (height - drawHeight) / 2
 
-    context.imageSmoothingEnabled = !isMobile
-    context.imageSmoothingQuality = isMobile ? 'low' : 'high'
+    context.imageSmoothingEnabled = !isMobileRef.current
+    context.imageSmoothingQuality = isMobileRef.current ? 'low' : 'high'
     context.drawImage(
       sheet,
-      sx, sy, SPRITE_FRAME_W, SPRITE_FRAME_H,
+      sx, sy, actualFrameWidth, actualFrameHeight,
       x, y, drawWidth, drawHeight,
     )
 
     return true
-  }, [shouldCoverFrame])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const renderProgress = useCallback((currentProgress: number) => {
     progressRef.current = currentProgress
@@ -213,30 +233,31 @@ const CharacterScrollReveal = ({
         renderedFrameRef.current = frameIndex
       }
     }
-
-    setProgress((current) => (
-      Math.abs(current - currentProgress) > 0.001 ? currentProgress : current
-    ))
   }, [drawFrame])
 
   // Load spritesheets (10 requests instead of 140)
+  // Key design: keep old sheets visible while new ones load to avoid black flash
   useEffect(() => {
     let cancelled = false
-    sheetsRef.current = new Array(SHEET_COUNT)
-    setLoadedSheets(0)
+    const newSheets: (HTMLImageElement | undefined)[] = new Array(SHEET_COUNT)
+    let newLoadedCount = 0
 
     Array.from({ length: SHEET_COUNT }, (_, sheetIndex) => {
       const image = new Image()
 
       image.decoding = 'async'
-      image.src = `/spritesheets/sprite-${sheetIndex}.avif`
+      image.src = `/spritesheets/sprite-${prefix}-${sheetIndex}.avif`
       image.onload = () => {
         if (cancelled) {
           return
         }
 
-        sheetsRef.current[sheetIndex] = image
-        setLoadedSheets((current) => Math.min(current + 1, SHEET_COUNT))
+        newSheets[sheetIndex] = image
+        newLoadedCount++
+
+        // Swap to new sheets once the first one is ready
+        sheetsRef.current = [...newSheets]
+        setLoadedSheets(newLoadedCount)
 
         // Re-draw current frame when a relevant sheet loads
         renderedFrameRef.current = -1
@@ -247,71 +268,98 @@ const CharacterScrollReveal = ({
           return
         }
 
-        // Count as loaded even on error to avoid infinite loading
-        setLoadedSheets((current) => Math.min(current + 1, SHEET_COUNT))
+        newLoadedCount++
+        setLoadedSheets(newLoadedCount)
       }
     })
 
     return () => {
       cancelled = true
     }
-  }, [renderProgress])
+  }, [prefix])
 
   useGSAP(() => {
     const wrapper = wrapperRef.current
     const stage = stickyRef.current
 
-    if (!wrapper || !stage) {
-      return undefined
-    }
+    if (!wrapper || !stage) return
 
+    const mm = gsap.matchMedia()
     const playhead = { progress: progressRef.current }
 
-    gsap.to(playhead, {
-      progress: 1,
-      ease: 'none',
-      onUpdate: () => {
-        renderProgress(playhead.progress)
-      },
-      scrollTrigger: {
-        trigger: wrapper,
-        start: 'top top',
-        end: isMobile ? '+=240%' : isTablet ? '+=300%' : '+=400%',
-        scrub: 1,
-        pin: stage,
-        pinSpacing: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onLeave: () => {
-          playhead.progress = 1
-          renderedFrameRef.current = -1
-          renderProgress(1)
+    mm.add({
+      isMobile: "(max-width: 639px)",
+      isTablet: "(min-width: 640px) and (max-width: 1023px)",
+      isDesktop: "(min-width: 1024px)"
+    }, (context) => {
+      const { isMobile, isTablet } = context.conditions as { isMobile: boolean, isTablet: boolean }
+      
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: wrapper,
+          start: 'top top',
+          end: () => isMobile ? '+=240%' : isTablet ? '+=300%' : '+=400%',
+          scrub: 1,
+          pin: stage,
+          pinSpacing: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onLeave: () => {
+            playhead.progress = 1
+            renderedFrameRef.current = -1
+            renderProgress(1)
+          },
+          onLeaveBack: () => {
+            playhead.progress = 0
+            renderedFrameRef.current = -1
+            renderProgress(0)
+          },
+          onRefresh: () => {
+            renderedFrameRef.current = -1
+            renderProgress(playhead.progress)
+          },
         },
-        onLeaveBack: () => {
-          playhead.progress = 0
-          renderedFrameRef.current = -1
-          renderProgress(0)
-        },
-        onRefresh: () => {
-          renderedFrameRef.current = -1
+      })
+
+      tl.to(playhead, {
+        progress: 1,
+        ease: 'none',
+        onUpdate: () => {
           renderProgress(playhead.progress)
         },
-      },
+      }, 0)
+
+      // Animate Story Beats
+      storyBeats.forEach((beat, index) => {
+        const beatEl = wrapper.querySelector(`.story-beat-${index}`)
+        if (beatEl) {
+          const fadeDistance = 0.08
+          tl.fromTo(beatEl, 
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: fadeDistance, ease: 'power2.out' },
+            beat.start
+          )
+          tl.to(beatEl, 
+            { opacity: 0, y: -20, duration: fadeDistance, ease: 'power2.in' },
+            beat.end - fadeDistance
+          )
+        }
+      })
+
+      // Animate Scroll Hint
+      const hint = wrapper.querySelector('.scroll-hint')
+      if (hint) {
+        tl.to(hint, { opacity: 0, y: 12, duration: 0.1 }, 0)
+      }
     })
 
-    const handleResize = () => {
-      renderedFrameRef.current = -1
-      renderProgress(progressRef.current)
-      ScrollTrigger.refresh()
-    }
-
-    window.addEventListener('resize', handleResize)
     renderProgress(progressRef.current)
 
     return () => {
-      window.removeEventListener('resize', handleResize)
+      mm.revert()
     }
-  }, { scope: wrapperRef, dependencies: [isMobile, isTablet, renderProgress] })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, { scope: wrapperRef, dependencies: [] })
 
   const stageClassName = `relative w-full overflow-hidden bg-[#050505] ${isMobile
     ? 'h-[100svh] min-h-[34rem]'
@@ -383,8 +431,7 @@ const CharacterScrollReveal = ({
           {storyBeats.map((beat, index) => (
             <article
               key={beat.title}
-              className="absolute mx-auto flex w-full max-w-full flex-col items-center text-center"
-              style={getBeatStyle(progress, beat)}
+              className={`story-beat-${index} absolute mx-auto flex w-full max-w-full flex-col items-center text-center opacity-0 pointer-events-none`}
             >
               <h1 className={titleClassName}>
                 {index === 0 ? characterName : beat.title}
@@ -397,11 +444,7 @@ const CharacterScrollReveal = ({
         </div>
 
         <div
-          className="pointer-events-none absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3 text-white/55"
-          style={{
-            opacity: mapRange(progress, 0.1, 0, 0, 1),
-            transform: `translate3d(-50%, ${mapRange(progress, 0, 0.1, 0, 12)}px, 0)`,
-          }}
+          className="scroll-hint pointer-events-none absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3 text-white/55"
         >
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.36em]">
             Scroll to Reveal
