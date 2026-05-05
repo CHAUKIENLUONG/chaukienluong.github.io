@@ -22,63 +22,17 @@ const Projects = () => {
     const viewportElement = viewport.current
     const trackElement = track.current
 
-    if (!section || !viewportElement || !trackElement) {
-      return
-    }
+    if (!section || !viewportElement || !trackElement) return
 
-    const getHorizontalDistance = () => Math.max(
-      0,
-      trackElement.scrollWidth - viewportElement.clientWidth,
-    )
+    const mm = gsap.matchMedia()
 
-    gsap.set(trackElement, { x: 0 })
+    mm.add("(min-width: 1024px)", () => {
+      // Desktop: Horizontal Scroll
+      const getHorizontalDistance = () => Math.max(0, trackElement.scrollWidth - viewportElement.clientWidth)
+      
+      gsap.set(trackElement, { x: 0 })
 
-    if (!shouldPinCarousel) {
-      gsap.fromTo(
-        section.querySelector('.projects-heading'),
-        { opacity: 0, y: 36 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 75%',
-            toggleActions: 'play none none reverse',
-          },
-        },
-      )
-
-      gsap.fromTo(
-        section.querySelectorAll('.project-card'),
-        { opacity: 0, y: 44 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.75,
-          stagger: 0.08,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 65%',
-            toggleActions: 'play none none reverse',
-          },
-        },
-      )
-    }
-
-    const refreshOnImagesLoaded = () => ScrollTrigger.refresh()
-    const images = Array.from(trackElement.querySelectorAll('img'))
-
-    images.forEach((image) => {
-      if (!image.complete) {
-        image.addEventListener('load', refreshOnImagesLoaded, { once: true })
-      }
-    })
-
-    const tween = shouldPinCarousel
-      ? gsap.to(trackElement, {
+      gsap.to(trackElement, {
         x: () => -getHorizontalDistance(),
         ease: 'none',
         scrollTrigger: {
@@ -91,14 +45,31 @@ const Projects = () => {
           invalidateOnRefresh: true,
         },
       })
-      : undefined
+    })
+
+    mm.add("(max-width: 1023px)", () => {
+      // Mobile/Tablet: Vertical Grid (No animation needed)
+      gsap.set(trackElement, { x: 0, clearProps: "all" })
+    })
+
+    const refreshOnImagesLoaded = () => ScrollTrigger.refresh()
+    const images = Array.from(trackElement.querySelectorAll('img'))
+
+    images.forEach((image) => {
+      if (!image.complete) {
+        image.addEventListener('load', refreshOnImagesLoaded, { once: true })
+      }
+    })
+
+    // Final safety refresh after component has settled
+    const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 500)
 
     return () => {
+      clearTimeout(refreshTimer)
+      mm.revert()
       images.forEach((image) => image.removeEventListener('load', refreshOnImagesLoaded))
-      tween?.scrollTrigger?.kill()
-      tween?.kill()
     }
-  }, { scope: container, dependencies: [projects.length, shouldPinCarousel] })
+  }, { scope: container, dependencies: [projects.length] })
 
   const sectionClassName = `luxury-section ${shouldPinCarousel ? 'overflow-hidden' : ''}`
   const contentClassName = `relative flex flex-col ${shouldPinCarousel ? 'min-h-screen justify-start pt-8 pb-12 lg:pt-12 lg:pb-16' : 'justify-start py-20 sm:py-24 md:py-28'}`

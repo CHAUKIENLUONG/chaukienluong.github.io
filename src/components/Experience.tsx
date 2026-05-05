@@ -32,6 +32,7 @@ const Experience = () => {
   const { isMobile, isTablet, isLaptop } = useResponsiveQuery()
 
   useGSAP(() => {
+    if (isMobile || isTablet) return
     gsap.fromTo(gsap.utils.toArray('.experience-card'),
       { opacity: 0, y: 50 },
       {

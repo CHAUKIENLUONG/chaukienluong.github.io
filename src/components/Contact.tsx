@@ -19,6 +19,7 @@ const Contact = () => {
   const { isMobile, isTablet, isLaptop } = useResponsiveQuery()
 
   useGSAP(() => {
+    if (isMobile || isTablet) return
     // Contact Content
     const contactLeft = container.current?.querySelector('.asymmetric-grid > div:nth-child(1)')
     const contactRight = container.current?.querySelector('.asymmetric-grid > div:nth-child(2)')

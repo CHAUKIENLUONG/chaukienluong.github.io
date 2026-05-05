@@ -6,10 +6,10 @@ const FRAME_COUNT = 140
 const FRAMES_PER_SHEET = 14
 const COLS = 2
 const ROWS = 7
-// Scale down to 60% of original (2560x1440 -> 1536x864) for much higher quality
-const FRAME_W = 1536
-const FRAME_H = 864
-const WEBP_QUALITY = 80
+const SIZES = [
+  { prefix: 'desktop', width: 1536, height: 864, quality: 75 },
+  { prefix: 'mobile', width: 800, height: 450, quality: 65 }
+]
 
 const SOURCE_DIR = resolve('public/sequence')
 const OUTPUT_DIR = resolve('public/spritesheets')
@@ -31,69 +31,67 @@ async function main() {
   }
 
   console.log(`Found ${frameFiles.length} frames. Generating ${SHEET_COUNT} spritesheets...`)
-  console.log(`Frame size: ${FRAME_W}x${FRAME_H}, Grid: ${COLS}x${ROWS}, Sheet size: ${COLS * FRAME_W}x${ROWS * FRAME_H}`)
-
   let totalSize = 0
 
-  for (let sheetIndex = 0; sheetIndex < SHEET_COUNT; sheetIndex++) {
-    const startFrame = sheetIndex * FRAMES_PER_SHEET
-    const endFrame = Math.min(startFrame + FRAMES_PER_SHEET, FRAME_COUNT)
-    const framesInSheet = endFrame - startFrame
+  for (const size of SIZES) {
+    console.log(`\n=== Generating ${size.prefix.toUpperCase()} spritesheets ===`)
+    console.log(`Frame size: ${size.width}x${size.height}, Grid: ${COLS}x${ROWS}, Sheet size: ${COLS * size.width}x${ROWS * size.height}`)
 
-    console.log(`\nSheet ${sheetIndex}: frames ${startFrame}-${endFrame - 1} (${framesInSheet} frames)`)
+    for (let sheetIndex = 0; sheetIndex < SHEET_COUNT; sheetIndex++) {
+      const startFrame = sheetIndex * FRAMES_PER_SHEET
+      const endFrame = Math.min(startFrame + FRAMES_PER_SHEET, FRAME_COUNT)
+      const framesInSheet = endFrame - startFrame
 
-    // Prepare composite operations
-    const composites = []
+      console.log(`\n[${size.prefix}] Sheet ${sheetIndex}: frames ${startFrame}-${endFrame - 1} (${framesInSheet} frames)`)
 
-    for (let i = 0; i < framesInSheet; i++) {
-      const globalIndex = startFrame + i
-      const col = i % COLS
-      const row = Math.floor(i / COLS)
-      const framePath = join(SOURCE_DIR, frameFiles[globalIndex])
+      const composites = []
 
-      // Resize each frame to target size
-      const resizedBuffer = await sharp(framePath)
-        .resize(FRAME_W, FRAME_H, { fit: 'cover' })
-        .toBuffer()
+      for (let i = 0; i < framesInSheet; i++) {
+        const globalIndex = startFrame + i
+        const col = i % COLS
+        const row = Math.floor(i / COLS)
+        const framePath = join(SOURCE_DIR, frameFiles[globalIndex])
 
-      composites.push({
-        input: resizedBuffer,
-        left: col * FRAME_W,
-        top: row * FRAME_H,
+        const resizedBuffer = await sharp(framePath)
+          .resize(size.width, size.height, { fit: 'cover' })
+          .toBuffer()
+
+        composites.push({
+          input: resizedBuffer,
+          left: col * size.width,
+          top: row * size.height,
+        })
+
+        process.stdout.write(`  Frame ${globalIndex + 1}/${FRAME_COUNT}\r`)
+      }
+
+      const sheetWidth = COLS * size.width
+      const sheetHeight = ROWS * size.height
+      const outputPath = join(OUTPUT_DIR, `sprite-${size.prefix}-${sheetIndex}.avif`)
+
+      await sharp({
+        create: {
+          width: sheetWidth,
+          height: sheetHeight,
+          channels: 3,
+          background: { r: 5, g: 5, b: 5 },
+        },
       })
+        .composite(composites)
+        .avif({ quality: size.quality, effort: 4 })
+        .toFile(outputPath)
 
-      process.stdout.write(`  Frame ${globalIndex + 1}/${FRAME_COUNT}\r`)
+      const stats = await import('node:fs').then(fs => fs.statSync(outputPath))
+      totalSize += stats.size
+      console.log(`  -> ${outputPath} (${(stats.size / 1024).toFixed(0)} KB)`)
     }
-
-    // Create the spritesheet canvas and composite all frames
-    const sheetWidth = COLS * FRAME_W
-    const sheetHeight = ROWS * FRAME_H
-
-    const outputPath = join(OUTPUT_DIR, `sprite-${sheetIndex}.webp`)
-
-    await sharp({
-      create: {
-        width: sheetWidth,
-        height: sheetHeight,
-        channels: 3,
-        background: { r: 5, g: 5, b: 5 },
-      },
-    })
-      .composite(composites)
-      .webp({ quality: WEBP_QUALITY })
-      .toFile(outputPath)
-
-    const stats = await import('node:fs').then(fs => fs.statSync(outputPath))
-    totalSize += stats.size
-    console.log(`  -> ${outputPath} (${(stats.size / 1024).toFixed(0)} KB)`)
   }
 
   console.log(`\n✓ All spritesheets generated successfully! Total size: ${(totalSize / 1024 / 1024).toFixed(2)} MB`)
 
   // Generate metadata JSON for the component
   const metadata = {
-    frameWidth: FRAME_W,
-    frameHeight: FRAME_H,
+    sizes: SIZES,
     cols: COLS,
     rows: ROWS,
     framesPerSheet: FRAMES_PER_SHEET,
